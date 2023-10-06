@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import  QMainWindow, QFileDialog,QApplication
 from PyQt6.QtCore import Qt,QProcess
 from PyQt6.uic import loadUi
 from IntermidiateWindow import *
+from ErrorWindow import *
 import sys
 
 
@@ -87,13 +88,18 @@ class MainWindow(QMainWindow):
         self.p.startCommand(script_path)
         self.p.waitForFinished()
         output = self.p.readAllStandardOutput().data().decode()
-
-
-        self.window1 = IntermidiateWindow()
-        self.window1.show()
-        self.window1.textEdit.setText(output)
-        self.window1.setWindowTitle("Intermidiate Window")   
-    
+        error = self.p.exitCode()
+        if error == 1:
+            self.err = ErrorWindow()
+            self.err.show()
+            self.err.textEdit.setText(output)
+            self.err.setWindowTitle("Error Window")  
+        else:
+            self.window1 = IntermidiateWindow()
+            self.window1.show()
+            self.window1.textEdit.setText(output)
+            self.window1.setWindowTitle("Intermidiate Window")   
+        
     def number_line(self):
         self.textEdit.textChanged.connect(self.update_line_numbers)
         self.line_number_edit = self.textBrowser

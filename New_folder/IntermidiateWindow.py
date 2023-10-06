@@ -1,8 +1,9 @@
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow,QApplication
 from PyQt6.QtCore import Qt
 from PyQt6.uic import loadUi
 from DebuggingWindow import *
 from FinalWindow import *
+import sys
 
 
 class IntermidiateWindow(QMainWindow):
@@ -53,7 +54,5 @@ class IntermidiateWindow(QMainWindow):
         self.pushButton.move(10, new_size.height() - 80)
         self.label.move((self.textEdit.width() // 2)-31,0)
         
-    
-
     
 
