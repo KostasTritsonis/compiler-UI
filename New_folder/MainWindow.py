@@ -4,10 +4,6 @@ from PyQt6 import QtGui
 from PyQt6.uic import loadUi
 from IntermidiateWindow import *
 from ErrorWindow import *
-<<<<<<< HEAD
-
-=======
->>>>>>> cf304aead397ea02e10fa1a7206670de37454db2
 import sys
 
 
@@ -98,11 +94,7 @@ class MainWindow(QMainWindow):
         if error == 1:
             self.err = ErrorWindow()
             self.err.show()
-<<<<<<< HEAD
             self.err.label.setText(output)
-=======
-            self.err.textEdit.setText(output)
->>>>>>> cf304aead397ea02e10fa1a7206670de37454db2
             self.err.setWindowTitle("Error Window")  
         else:
             self.window1 = IntermidiateWindow()
