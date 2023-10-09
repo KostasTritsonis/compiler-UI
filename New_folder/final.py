@@ -1,7 +1,7 @@
-
+import sys
 instructions = []
 results = {}
-f = open('intFile.int','r')
+f = open(sys.argv[1],'r')
 lread = f.readline()
 while lread!='':
     lread1 = lread.split(' ')
@@ -32,6 +32,7 @@ def block():
             break
         elif i[0] == 'inp':
             temp = input()
+            print(temp)
             results[i[1]] = checkString(temp)
     return
         

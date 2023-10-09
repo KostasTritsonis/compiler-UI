@@ -4,7 +4,7 @@ import sys
 
 
 f=open(sys.argv[1],'r')
-f1=f.read()
+#f1=f.read()
 line=1
 listofquads = []
 listoftemp = []
@@ -211,9 +211,10 @@ def lex():
     cur=Cstart
     counter=line
     results=[]
-    while(cur>=0 and cur<=6 and z<len(f1)):
-        c = f1[z]
-        z+=1
+    while(cur>=0 and cur<=6):
+        #c = f1[z]
+        #z+=1
+        c = f.read(1)
         if(c in alph):
             c_tk = idk
         elif(c in num):
@@ -277,8 +278,9 @@ def lex():
             counter -= 1
 
         word = word[:-1]
-        z-=1
-        c=z
+        c=f.seek(f.tell()-1,0)
+        #z-=1
+        #c=z
 
     if (cur == dig_tk):
         if (int(word)>= pow(2,32)):
