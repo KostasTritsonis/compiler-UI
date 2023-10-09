@@ -1,11 +1,20 @@
+<<<<<<< HEAD
 import sys
 from PyQt6.QtCore import QIODevice, QTextStream,QProcess
 from PyQt6.QtWidgets import QApplication
 from PyQt6 import QtGui
+=======
+from PyQt6.QtWidgets import QMainWindow,QApplication
+from PyQt6.QtCore import Qt
+>>>>>>> cf304aead397ea02e10fa1a7206670de37454db2
 from PyQt6.uic import loadUi
 from DebuggingWindow import *
 from FinalWindow import *
 import sys
+<<<<<<< HEAD
+=======
+
+>>>>>>> cf304aead397ea02e10fa1a7206670de37454db2
 
 class IntermidiateWindow(QMainWindow):
     def __init__(self):
@@ -76,6 +85,4 @@ class IntermidiateWindow(QMainWindow):
         self.textBrowser.setGeometry(10, 31, 31, new_size.height() - 120)
         self.pushButton.move(10, new_size.height() - 80)
         self.label.move((self.textEdit.width() // 2)-31,0)
-
-    
 
