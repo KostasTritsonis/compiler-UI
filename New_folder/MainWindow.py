@@ -86,7 +86,6 @@ class MainWindow(QMainWindow):
     def compile(self):
         self.p = QProcess()
         script_path  = "python {compiler} {current_path}".format(current_path=self.current_path,compiler='cimple.py')
-        
         self.p.startCommand(script_path)
         self.p.waitForFinished()
         output = self.p.readAllStandardOutput().data().decode()

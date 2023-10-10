@@ -1311,7 +1311,6 @@ def intFile(file):
     text = ""
     for i in range(len(listofquads)):
         q = listofquads[i]
-        print(q)
         text += str(q[1])+" "+str(q[2])+" "+str(q[3])+" "+str(q[4])+"\n"
 
     print(text)

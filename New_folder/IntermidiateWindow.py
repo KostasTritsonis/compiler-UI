@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import sys
-=======
->>>>>>> f22d3ab02664a2ba5c85673fd75f1796b7c9b691
 from PyQt6.QtCore import QIODevice, QTextStream,QProcess
 from PyQt6.QtWidgets import QApplication
 from PyQt6 import QtGui
@@ -27,8 +23,27 @@ class IntermidiateWindow(QMainWindow):
         self.window2.setWindowTitle("Debug Window")
      
     def run(self):
+        self.window1 = FinalWindow()
+        self.window1.show()
         self.p = QProcess()
-        self.p.start(sys.executable, ["final.py"], QIODevice.OpenMode(QIODevice.OpenModeFlag.ReadWrite))
+        script_path  = "python {compiler}".format(compiler='final.py')
+        self.p.startCommand(script_path)
+        while(self.p.waitForFinished()):
+            output = self.p.readAllStandardOutput().data().decode()
+            print(output)
+            self.window1.textEdit.setText(output)
+            if (self.p.waitForStarted()):
+                text = self.textEdit.toPlainText()
+                text = text.split("\n")
+                ftext = text[-1]
+                self.p.write(ftext);
+                self.p.closeWriteChannel();
+        
+            
+        
+        
+        self.window1.setWindowTitle("Intermidiate Window")   
+        
         
         
     def number_line(self):
