@@ -94,11 +94,7 @@ class MainWindow(QMainWindow):
         if error == 1:
             self.err = ErrorWindow()
             self.err.show()
-
             self.err.label.setText(output)
-
-            self.err.textEdit.setText(output)
-
             self.err.setWindowTitle("Error Window")  
         else:
             self.window1 = IntermidiateWindow()

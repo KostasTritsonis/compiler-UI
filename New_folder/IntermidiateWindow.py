@@ -1,20 +1,11 @@
-<<<<<<< HEAD
 import sys
 from PyQt6.QtCore import QIODevice, QTextStream,QProcess
 from PyQt6.QtWidgets import QApplication
 from PyQt6 import QtGui
-=======
-from PyQt6.QtWidgets import QMainWindow,QApplication
-from PyQt6.QtCore import Qt
->>>>>>> cf304aead397ea02e10fa1a7206670de37454db2
 from PyQt6.uic import loadUi
 from DebuggingWindow import *
 from FinalWindow import *
 import sys
-<<<<<<< HEAD
-=======
-
->>>>>>> cf304aead397ea02e10fa1a7206670de37454db2
 
 class IntermidiateWindow(QMainWindow):
     def __init__(self):

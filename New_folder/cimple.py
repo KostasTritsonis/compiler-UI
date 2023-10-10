@@ -4,15 +4,13 @@ import sys
 
 
 f=open(sys.argv[1],'r')
-#f1=f.read()
 line=1
 listofquads = []
 listoftemp = []
 listofscopes = []
 parameters = []
-countq = 0
+countq = 1
 variableT = 0
-z=0
 
 #conditions
 Cstart=0
@@ -206,14 +204,12 @@ def checkwords(cur):
 
 
 def lex():
-    global z,line,word
+    global line,word
     word=''
     cur=Cstart
     counter=line
     results=[]
     while(cur>=0 and cur<=6):
-        #c = f1[z]
-        #z+=1
         c = f.read(1)
         if(c in alph):
             c_tk = idk
@@ -279,8 +275,6 @@ def lex():
 
         word = word[:-1]
         c=f.seek(f.tell()-1,0)
-        #z-=1
-        #c=z
 
     if (cur == dig_tk):
         if (int(word)>= pow(2,32)):
@@ -428,7 +422,7 @@ def syn():
                     line = lex1[2]
 
                 else:
-                    print("ERROR:There is not \",\" before variable  or between the variables in line ",line)
+                    print("ERROR:There is not \",\" before variable or between the variables in line ",line)
                     exit(1)
         return
 
@@ -462,15 +456,15 @@ def syn():
                         return
 
                     else:
-                        print("ERROR:There is not a \")\"  at line ",line)
+                        print("ERROR:There is not a \")\" at line ",line)
                         exit(1)
 
                 else:
-                    print("ERROR:There is not a \"(\"  at line ",line)
+                    print("ERROR:There is not a \"(\" at line ",line)
                     exit(1)
 
             else:
-                print("ERROR:Expected variable's name after function  at line",line)
+                print("ERROR:Expected variable's name after function at line",line)
                 exit(1)
 
         elif(lex1[0] == procedure_tk):
@@ -502,7 +496,7 @@ def syn():
                     exit(1)
 
             else:
-                print("ERROR:Expected variable after procedure  at line",line)
+                print("ERROR:Expected variable after procedure at line",line)
                 exit(1)
         
     def formalparlist():
@@ -764,11 +758,11 @@ def syn():
                 backpatch(exitlist,nextquad())
 
             else:
-                print("ERROR:An error occured during the \"default\"  in line ",line)
+                print("ERROR:An error occured during the \"default\" in line ",line)
                 exit(1)
 
         else:
-            print("ERROR:An error occured during the \"switchcase\"  in line ",line)
+            print("ERROR:An error occured during the \"switchcase\" in line ",line)
             exit(1)
 
     def forcaseStat():
@@ -813,11 +807,11 @@ def syn():
                 statements()
 
             else:
-                print("ERROR:An error occured during the \"default\"  in line ",line)
+                print("ERROR:An error occured during the \"default\" in line ",line)
                 exit(1)
 
         else:
-            print("ERROR:An error occured during the \"forcase\"  in line ",line)
+            print("ERROR:An error occured during the \"forcase\" in line ",line)
             exit(1)
 
     def incaseStat():
@@ -856,7 +850,7 @@ def syn():
                     exit(1)
             genquad(':=',w,0,Bquad)            
         else:
-            print("ERROR:An error occured during the \"incase\"  in line ",line)
+            print("ERROR:An error occured during the \"incase\" in line ",line)
             exit(1)
 
     def returnStat():
@@ -997,7 +991,7 @@ def syn():
                 exit(1)
 
         else:
-            print("ERROR:An error occured during the \"input\"  in line ",line)
+            print("ERROR:An error occured during the \"input\" in line ",line)
             exit(1)
 
 
@@ -1317,6 +1311,7 @@ def intFile(file):
     text = ""
     for i in range(len(listofquads)):
         q = listofquads[i]
+        print(q)
         text += str(q[1])+" "+str(q[2])+" "+str(q[3])+" "+str(q[4])+"\n"
 
     print(text)
