@@ -4,7 +4,7 @@ program check
 {
 	a:=4;
 	print(a);
-	b:=2;
+	input(b);
 	c := a + b;
 	print(c);
 	d := c / a;

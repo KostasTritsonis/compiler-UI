@@ -23,29 +23,19 @@ class IntermidiateWindow(QMainWindow):
         self.window2.setWindowTitle("Debug Window")
      
     def run(self):
+        self.p = QProcess()
+        script_path  = "python {compiler} {current_path}".format(compiler='final.py',current_path='intFile.int')
+        self.p.startCommand(script_path) 
+        inputData = "Hello, Input Method!";
+        self.p.write(inputData.encode());
+        self.p.closeWriteChannel();
+        self.p.waitForFinished()
+        output = self.p.readAllStandardOutput().data().decode()
         self.window1 = FinalWindow()
         self.window1.show()
-        self.p = QProcess()
-        script_path  = "python {compiler}".format(compiler='final.py')
-        self.p.startCommand(script_path)
-        while(self.p.waitForFinished()):
-            output = self.p.readAllStandardOutput().data().decode()
-            print(output)
-            self.window1.textEdit.setText(output)
-            if (self.p.waitForStarted()):
-                text = self.textEdit.toPlainText()
-                text = text.split("\n")
-                ftext = text[-1]
-                self.p.write(ftext);
-                self.p.closeWriteChannel();
-        
-            
-        
-        
-        self.window1.setWindowTitle("Intermidiate Window")   
-        
-        
-        
+        self.window1.textEdit.setText(output)
+        self.window1.setWindowTitle("Final Window") 
+
     def number_line(self):
         self.textEdit.textChanged.connect(self.update_line_numbers)
         self.line_number_edit = self.textBrowser
@@ -73,4 +63,3 @@ class IntermidiateWindow(QMainWindow):
         self.textBrowser.setGeometry(10, 31, 31, new_size.height() - 120)
         self.pushButton.move(10, new_size.height() - 80)
         self.label.move((self.textEdit.width() // 2)-31,0)
-
