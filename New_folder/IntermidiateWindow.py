@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import sys
+=======
+>>>>>>> f22d3ab02664a2ba5c85673fd75f1796b7c9b691
 from PyQt6.QtCore import QIODevice, QTextStream,QProcess
 from PyQt6.QtWidgets import QApplication
 from PyQt6 import QtGui
@@ -26,28 +29,7 @@ class IntermidiateWindow(QMainWindow):
     def run(self):
         self.p = QProcess()
         self.p.start(sys.executable, ["final.py"], QIODevice.OpenMode(QIODevice.OpenModeFlag.ReadWrite))
-        self.window3 = FinalWindow()
-        self.window3.show()
-        if self.p.waitForStarted():
-            if self.p.waitForReadyRead(): 
-                stdin_stream = QTextStream(self.p)
-                user_input = self.textEdit.toPlainText()
-                user_input.split("\n")
-                user_input = user_input[-1]
-                stdin_stream << user_input
-                stdin_stream.flush()  # Flush the stream to ensure data is sent immediately
-
-                # Close the standard input to indicate that no more data will be sent
-                self.p.closeWriteChannel()
-
-                # Wait for the process to finish and get its exit code
-                self.p.waitForFinished()
-                output = self.p.readAllStandardOutput().data().decode()
-            else:
-                output = self.p.readAllStandardOutput().data().decode()
-            
-            self.window3.textEdit.setText(output)
-            self.window3.setWindowTitle("Final Window")
+        
         
     def number_line(self):
         self.textEdit.textChanged.connect(self.update_line_numbers)
