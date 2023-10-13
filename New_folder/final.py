@@ -2,6 +2,7 @@ import sys
 instructions = []
 results = {}
 f = open(sys.argv[1],'r')
+breakpoint = sys.argv[2]
 lread = f.readline()
 while lread!='':
     lread1 = lread.split(' ')

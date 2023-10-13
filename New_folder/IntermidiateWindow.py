@@ -1,5 +1,4 @@
-from PyQt6.QtCore import QIODevice, QTextStream,QProcess
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtCore import QProcess
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
 from DebuggingWindow import *
@@ -24,13 +23,14 @@ class IntermidiateWindow(QMainWindow):
      
     def run(self):
         self.p = QProcess()
-        script_path  = "python {compiler} {current_path}".format(compiler='final.py',current_path='intFile.int')
+        script_path  = "python {compiler} {current_path} 0".format(compiler='final.py',current_path='intFile.int')
         self.p.startCommand(script_path) 
-        inputData = "Hello, Input Method!";
-        self.p.write(inputData.encode());
-        self.p.closeWriteChannel();
+        inputData = "2"
+        self.p.write(inputData.encode())
+        self.p.closeWriteChannel()
         self.p.waitForFinished()
         output = self.p.readAllStandardOutput().data().decode()
+        
         self.window1 = FinalWindow()
         self.window1.show()
         self.window1.textEdit.setText(output)
