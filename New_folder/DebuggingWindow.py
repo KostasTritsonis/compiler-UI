@@ -1,15 +1,20 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
-from PyQt6.QtCore import QProcess
+from PyQt6.QtCore import QProcess,QTextStream
 from PyQt6.uic import loadUi
-
+from BreakpointWindow import *
 
 class DebugWindow(QMainWindow):
+    breakpoint = ''
     def __init__(self):
         super(DebugWindow,self).__init__()
         loadUi("DebugWindow.ui",self) 
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
         self.pushButton.clicked.connect(self.stop)
+        
+        dialog = BreakpointWindow()
+        dialog.dataPassed.connect(self.setBreakpoint)
+        dialog.exec()
         
         self.debug()
     
@@ -21,15 +26,21 @@ class DebugWindow(QMainWindow):
         self.label.move((self.textEdit.width() // 2),10)
 
         
-
     def stop(self):
         self.close()
         
     def debug(self):
         self.p = QProcess()
-        script_path  = "python {compiler} {current_path} 5".format(compiler='final.py',current_path='intFile.int')
+        script_path  = "python {compiler} {current_path} {line}".format(compiler='final.py',current_path='intFile.int',line=breakpoint)
         self.p.startCommand(script_path)
         self.p.waitForFinished()
         output = self.p.readAllStandardOutput().data().decode()
-        print(output)
         self.textEdit.setText(output)
+        
+    def setBreakpoint(self,data):
+        global breakpoint
+        if data == '':
+            breakpoint = '0'
+        else:
+            breakpoint = data
+        

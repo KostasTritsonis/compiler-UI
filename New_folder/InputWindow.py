@@ -4,11 +4,11 @@ from PyQt6.QtCore import pyqtSignal
 from PyQt6.uic import loadUi
 
 
-class BreakpointWindow(QDialog):
+class InputWindow(QDialog):
     dataPassed = pyqtSignal(str)
     def __init__(self):
-        super(BreakpointWindow,self).__init__()
-        loadUi("BreakpointWindow.ui",self) 
+        super(InputWindow,self).__init__()
+        loadUi("InputWindow.ui",self) 
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
         
         self.pushButton.clicked.connect(self.accept)

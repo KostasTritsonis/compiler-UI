@@ -13,7 +13,7 @@ while lread!='':
     
 def block():
     global instructions
-    lines = breakpoint
+    lines = breakpoint+1
     for i in instructions:
         lines -=1
         if lines == 0:
@@ -54,14 +54,13 @@ def checkString(string):
         
         
 def printTable():
-    os.system('cls')
     for key, value in results.items():
         print(key, ":", value)
         
         
     
 block()
-if breakpoint != 0:
+if breakpoint != 0 and breakpoint<len(instructions):
     printTable()
 
        

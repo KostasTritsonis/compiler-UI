@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1197</width>
-    <height>796</height>
+    <width>801</width>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,6 +54,12 @@ border:0;
       <height>681</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true"/>
     </property>
@@ -84,7 +90,7 @@ color: rgb(0, 0, 0);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1197</width>
+     <width>801</width>
      <height>22</height>
     </rect>
    </property>
