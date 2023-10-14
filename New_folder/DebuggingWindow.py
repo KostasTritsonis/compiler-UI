@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
-from PyQt6.QtCore import QProcess,QTextStream
+from PyQt6.QtCore import QProcess
 from PyQt6.uic import loadUi
 from BreakpointWindow import *
 

@@ -38,7 +38,4 @@ class FinalWindow(QMainWindow):
         
     def setBreakpoint(self,data):
         global breakpoint
-        if data == '':
-            breakpoint = ''
-        else:
-            breakpoint = data
+        breakpoint = data
