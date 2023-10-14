@@ -45,7 +45,7 @@ color:#000000;
      <string notr="true">border-color: rgb(255, 255, 255);</string>
     </property>
     <property name="readOnly">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QLabel" name="label">

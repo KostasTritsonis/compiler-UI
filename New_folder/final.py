@@ -1,8 +1,8 @@
-import sys
+import sys,os
 instructions = []
 results = {}
 f = open(sys.argv[1],'r')
-breakpoint = sys.argv[2]
+breakpoint = int(sys.argv[2])
 lread = f.readline()
 while lread!='':
     lread1 = lread.split(' ')
@@ -13,7 +13,11 @@ while lread!='':
     
 def block():
     global instructions
+    lines = breakpoint
     for i in instructions:
+        lines -=1
+        if lines == 0:
+            break
         if i[0] == ':=':
             if i[1] in results:
                 results[i[-1]] = results[i[1]]
@@ -33,7 +37,6 @@ def block():
             break
         elif i[0] == 'inp':
             temp = input()
-            print(temp)
             results[i[1]] = checkString(temp)
     return
         
@@ -50,7 +53,15 @@ def checkString(string):
             return string
         
         
+def printTable():
+    os.system('cls')
+    for key, value in results.items():
+        print(key, ":", value)
+        
+        
     
 block()
+if breakpoint != 0:
+    printTable()
 
        

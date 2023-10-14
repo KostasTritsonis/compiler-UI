@@ -3,7 +3,7 @@ from PyQt6 import QtGui
 from PyQt6.uic import loadUi
 from DebuggingWindow import *
 from FinalWindow import *
-import sys
+from BreakpointWindow import *
 
 class IntermidiateWindow(QMainWindow):
     def __init__(self):
@@ -22,19 +22,28 @@ class IntermidiateWindow(QMainWindow):
         self.window2.setWindowTitle("Debug Window")
      
     def run(self):
-        self.p = QProcess()
-        script_path  = "python {compiler} {current_path} 0".format(compiler='final.py',current_path='intFile.int')
-        self.p.startCommand(script_path) 
-        inputData = "2"
-        self.p.write(inputData.encode())
-        self.p.closeWriteChannel()
-        self.p.waitForFinished()
-        output = self.p.readAllStandardOutput().data().decode()
-        
         self.window1 = FinalWindow()
         self.window1.show()
-        self.window1.textEdit.setText(output)
+        self.window1.textEdit.setReadOnly(True)
         self.window1.setWindowTitle("Final Window") 
+        
+        self.p = QProcess()
+        script_path  = "python {compiler} {current_path} 0".format(compiler='final.py',current_path='intFile.int')
+        self.p.startCommand(script_path)
+        output = self.p.readAllStandardOutput().data().decode()
+        self.window1.textEdit.setText(output)
+        f = open('intFile.int','r')
+        f1 = f.read()
+        if 'inp' in f1:
+            self.window1.textEdit.setReadOnly(False)
+            text = self.window1.textEdit.toPlainText()
+            text = text.split('\n')
+            self.p.write(text[-1].encode())
+            self.p.closeWriteChannel()
+        self.p.waitForFinished()
+        output = self.p.readAllStandardOutput().data().decode()
+        self.window1.textEdit.setText(output)
+        
 
     def number_line(self):
         self.textEdit.textChanged.connect(self.update_line_numbers)
