@@ -1,13 +1,14 @@
 program check
-	declare a,b,c,d;
+	declare a,b,c,d,f;
 	
 {
 	a:=4;
 	print(a);
-	b:=3;
+	input(b);
 	c := a + b;
 	print(c);
 	d := c / a;
 	print(d);
+	input(f);
 	
 }.

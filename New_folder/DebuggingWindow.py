@@ -3,9 +3,10 @@ from PyQt6 import QtGui
 from PyQt6.QtCore import QProcess
 from PyQt6.uic import loadUi
 from BreakpointWindow import *
-
+from InputWindow import *
 class DebugWindow(QMainWindow):
     breakpoint = ''
+    inputValue = ''
     def __init__(self):
         super(DebugWindow,self).__init__()
         loadUi("DebugWindow.ui",self) 
@@ -33,9 +34,22 @@ class DebugWindow(QMainWindow):
         self.p = QProcess()
         script_path  = "python {compiler} {current_path} {line}".format(compiler='final.py',current_path='intFile.int',line=breakpoint)
         self.p.startCommand(script_path)
+        f = open('intFile.int','r')
+        f1 = f.readline()
+        while f1!='':
+            if 'inp' in f1:
+                dialog = InputWindow()
+                dialog.dataPassed.connect(self.setInputValue)
+                dialog.exec()
+                self.p.write(inputValue.encode())
+            f1 = f.readline()
+        
+        self.p.closeWriteChannel()
         self.p.waitForFinished()
         output = self.p.readAllStandardOutput().data().decode()
         self.textEdit.setText(output)
+        
+        f.close()
         
     def setBreakpoint(self,data):
         global breakpoint
@@ -43,4 +57,8 @@ class DebugWindow(QMainWindow):
             breakpoint = '0'
         else:
             breakpoint = data
+            
+    def setInputValue(self,data):
+        global inputValue
+        inputValue = data
         
