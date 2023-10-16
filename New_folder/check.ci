@@ -10,5 +10,6 @@ program check
 	d := c / a;
 	print(d);
 	input(f);
+	print(f);
 	
 }.

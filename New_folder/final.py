@@ -1,4 +1,4 @@
-import sys
+import sys,os
 instructions = []
 results = {}
 f = open(sys.argv[1],'r')
@@ -38,7 +38,8 @@ def block():
         elif i[0] == 'halt':
             break
         elif i[0] == 'inp':
-            temp = input()
+            print("Give input:")
+            temp =  sys.stdin.readline().strip()
             results[i[1]] = checkString(temp)
     return
         
@@ -68,6 +69,7 @@ else:
        
 block()
 if breakpoint != 'None':
+    print('-')
     printTable()
 
        

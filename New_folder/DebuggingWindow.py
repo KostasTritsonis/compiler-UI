@@ -1,9 +1,10 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
-from PyQt6.QtCore import QProcess
+from PyQt6.QtCore import QTextStream,QProcess
 from PyQt6.uic import loadUi
 from BreakpointWindow import *
 from InputWindow import *
+import subprocess,sys,threading
 class DebugWindow(QMainWindow):
     breakpoint = ''
     inputValue = ''
@@ -31,30 +32,27 @@ class DebugWindow(QMainWindow):
         self.close()
         
     def debug(self):
-        self.p = QProcess()
-        script_path  = "python {compiler} {current_path} {line}".format(compiler='final.py',current_path='intFile.int',line=breakpoint)
-        self.p.startCommand(script_path)
-        f = open('intFile.int','r')
-        f1 = f.readline()
-        while f1!='':
-            if 'inp' in f1:
-                dialog = InputWindow()
-                dialog.dataPassed.connect(self.setInputValue)
-                dialog.exec()
-                self.p.write(inputValue.encode())
-            f1 = f.readline()
-        
-        self.p.closeWriteChannel()
-        self.p.waitForFinished()
-        output = self.p.readAllStandardOutput().data().decode()
-        self.textEdit.setText(output)
-        
-        f.close()
+        script_path  = "python -u {compiler} {current_path} {line}".format(compiler='final.py',current_path='intFile.int',line=breakpoint)
+        self.p = subprocess.Popen(script_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+        text = ''
+        while self.p.poll() is None:
+            line = self.p.stdout.readline().strip()
+            if line:
+                if 'Give input:' in line:
+                    self.giveInput()
+                    self.p.stdin.write(inputValue + "\n")
+                    self.p.stdin.flush()
+                if line == '-':
+                    while self.p.poll() is None:
+                        line = self.p.stdout.readline().strip()
+                        text+=line+'\n'
+        self.p.stdin.close()
+        self.textEdit.setText(text)
         
     def setBreakpoint(self,data):
         global breakpoint
         if data == '':
-            breakpoint = '0'
+            breakpoint = 'None'
         else:
             breakpoint = data
             
@@ -62,3 +60,9 @@ class DebugWindow(QMainWindow):
         global inputValue
         inputValue = data
         
+    def giveInput(self):
+            dialog = InputWindow()
+            dialog.dataPassed.connect(self.setInputValue)
+            dialog.exec()  
+            
+            

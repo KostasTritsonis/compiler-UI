@@ -1,5 +1,4 @@
 from PyQt6.QtWidgets import QMainWindow
-from PyQt6.QtCore import Qt
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
 from DebuggingWindow import *
@@ -12,6 +11,7 @@ class FinalWindow(QMainWindow):
         super(FinalWindow,self).__init__()
         loadUi("FinalWindow.ui",self)
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
+        print(1)
         self.readfile()
         
         
@@ -21,27 +21,27 @@ class FinalWindow(QMainWindow):
         self.textEdit.setGeometry(9, 39, new_size.width() - 20, new_size.height() - 100)
         self.label.move((self.textEdit.width() // 2),10)
         
+    def readfile(self):
+        script_path  = "python -u {compiler} {current_path} None".format(compiler='final.py',current_path='intFile.int',line=breakpoint)
+        self.p = subprocess.Popen(script_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+        text = ''
+        while self.p.poll() is None:
+            line = self.p.stdout.readline().strip()
+            if line:
+                if 'Give input:' in line:
+                    self.giveInput()
+                    self.p.stdin.write(inputValue + "\n")
+                    self.p.stdin.flush()
+                else:
+                    text+=line+'\n'
+        self.p.stdin.close()
+        self.textEdit.setText(text)
+        
+    def giveInput(self):
+        dialog = InputWindow()
+        dialog.dataPassed.connect(self.setInputValue)
+        dialog.exec()  
+        
     def setInputValue(self,data):
         global inputValue
         inputValue = data
-        
-    def readfile(self):
-        self.p = QProcess()
-        script_path  = "python {compiler} {current_path} None".format(compiler='final.py',current_path='intFile.int')
-        self.p.startCommand(script_path)
-        f = open('intFile.int','r')
-        f1 = f.readline()
-        while f1!='':
-            if 'inp' in f1:
-                dialog = InputWindow()
-                dialog.dataPassed.connect(self.setInputValue)
-                dialog.exec()
-                self.p.write(inputValue.encode())
-            f1 = f.readline()
-    
-        self.p.closeWriteChannel()
-        self.p.waitForFinished()
-        output = self.p.readAllStandardOutput().data().decode()
-        self.textEdit.setText(output)
-        
-        f.close()

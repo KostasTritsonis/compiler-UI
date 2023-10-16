@@ -9,5 +9,6 @@ out c _ _
 := T_1 _ d 
 out d _ _ 
 inp f _ _ 
+out f _ _ 
 halt _ _ _ 
 end_block check _ _ 
