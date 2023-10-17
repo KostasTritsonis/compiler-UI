@@ -11,7 +11,6 @@ class FinalWindow(QMainWindow):
         super(FinalWindow,self).__init__()
         loadUi("FinalWindow.ui",self)
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
-        print(1)
         self.readfile()
         
         

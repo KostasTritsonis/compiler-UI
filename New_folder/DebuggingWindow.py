@@ -1,10 +1,9 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
-from PyQt6.QtCore import QTextStream,QProcess
 from PyQt6.uic import loadUi
 from BreakpointWindow import *
 from InputWindow import *
-import subprocess,sys,threading
+import subprocess
 class DebugWindow(QMainWindow):
     breakpoint = ''
     inputValue = ''
@@ -13,11 +12,7 @@ class DebugWindow(QMainWindow):
         loadUi("DebugWindow.ui",self) 
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
         self.pushButton.clicked.connect(self.stop)
-        
-        dialog = BreakpointWindow()
-        dialog.dataPassed.connect(self.setBreakpoint)
-        dialog.exec()
-        
+        self.giveBreakPoint()
         self.debug()
     
     def resizeEvent(self, event):
@@ -47,12 +42,13 @@ class DebugWindow(QMainWindow):
                         line = self.p.stdout.readline().strip()
                         text+=line+'\n'
         self.p.stdin.close()
+        text = text.strip()
         self.textEdit.setText(text)
         
     def setBreakpoint(self,data):
         global breakpoint
         if data == '':
-            breakpoint = 'None'
+            self.giveBreakPoint()
         else:
             breakpoint = data
             
@@ -65,4 +61,8 @@ class DebugWindow(QMainWindow):
             dialog.dataPassed.connect(self.setInputValue)
             dialog.exec()  
             
+    def giveBreakPoint(self):
+        dialog = BreakpointWindow()
+        dialog.dataPassed.connect(self.setBreakpoint)
+        dialog.exec()
             
