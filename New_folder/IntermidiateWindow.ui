@@ -121,7 +121,6 @@ color: rgb(0, 0, 0);</string>
      <string>Debugging</string>
     </property>
     <addaction name="actionStart"/>
-    <addaction name="actionStop"/>
    </widget>
    <widget class="QMenu" name="menuMap">
     <property name="title">

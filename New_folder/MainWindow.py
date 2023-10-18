@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
             self.saveFileAs()
 
     def saveFileAs(self):
-        pathname = QFileDialog.getSaveFileName(self, 'Save file', '', 'Python files(*.py)')
+        pathname = QFileDialog.getSaveFileName(self, 'Save file', '', 'Cimple files(*.ci)')
         if(pathname[0]!=""):
             with open(pathname[0], 'w') as f:
                 f.write(self.textEdit.toPlainText())
@@ -54,7 +54,7 @@ class MainWindow(QMainWindow):
             return
 
     def openFile(self):
-        fname = QFileDialog.getOpenFileName(self, 'Open file','', 'Cimple files(*.ci);;Python files (*.py)')
+        fname = QFileDialog.getOpenFileName(self, 'Open file','', 'Cimple files(*.ci)')
         if(fname[0]!=""):
             self.setWindowTitle(fname[0])
             with open(fname[0], 'r') as f:
@@ -85,9 +85,16 @@ class MainWindow(QMainWindow):
 
     def compile(self):
         self.p = QProcess()
-        script_path  = "python {compiler} {current_path}".format(current_path=self.current_path,compiler='cimple.py')
+        if self.compiler == '' or self.compiler == None :
+            self.win2 = ErrorWindow()
+            self.win2.show()
+            self.win2.label.setText("Choose Compiler first")
+            self.win2.setWindowTitle("Error Window")  
+            return
+        script_path  = "python {compiler} {current_path}".format(current_path=self.current_path,compiler=self.compiler)
         self.p.startCommand(script_path)
-        self.p.waitForFinished()
+        if(self.p.waitForFinished() == False):
+            return
         output = self.p.readAllStandardOutput().data().decode()
         error = self.p.exitCode()
         if error == 1:
