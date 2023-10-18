@@ -439,9 +439,10 @@ def syn():
             lex1 = lex()
             line = lex1[2]  
             if(lex1[0] == idk_tk):
+                token = lex1[1]
                 lex1 = lex()
                 line = lex1[2]
-                token = lex1[1]
+               
 
                 if(lex1[0] == lquotation_mark_tk):
                     lex1 = lex()
@@ -472,9 +473,9 @@ def syn():
             line = lex1[2]
 
             if(lex1[0] == idk_tk):
+                token = lex1[1]
                 lex1 = lex()
                 line = lex1[2]
-                token = lex1[1]
 
                 if(lex1[0] == lquotation_mark_tk):
                     lex1 = lex()
