@@ -1,0 +1,12 @@
+{'name': 'a', 'type': 'Var', 'offset': 12}
+{'name': 'b', 'type': 'Var', 'offset': 16}
+{'name': 'c', 'type': 'Var', 'offset': 20}
+{'name': 'd', 'type': 'Var', 'offset': 24}
+{'name': 'f', 'type': 'Var', 'offset': 28}
+{'name': 'T_0', 'type': 'Temp', 'offset': 32}
+{'name': 'T_1', 'type': 'Temp', 'offset': 36}
+Scope Name: check
+Scope Flength:40
+Scope NestingLevel:0
+
+----------------------------------------------------------------------------------

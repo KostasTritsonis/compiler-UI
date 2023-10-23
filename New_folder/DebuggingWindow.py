@@ -41,9 +41,8 @@ class DebugWindow(QMainWindow):
                     while self.p.poll() is None:
                         line = self.p.stdout.readline().strip()
                         text+=line+'\n'
+        self.textEdit.setText(text.strip())
         self.p.stdin.close()
-        text = text.strip()
-        self.textEdit.setText(text)
         
     def setBreakpoint(self,data):
         global breakpoint

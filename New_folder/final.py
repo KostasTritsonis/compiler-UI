@@ -15,25 +15,21 @@ while lread!='':
 f.close()
     
 def block():
-    global instructions,lines
-    
-    
-    
+    global instructions,lines,commands
+
     for i in instructions:
-        print()
         if lines != None:
             lines -=1
             if lines == 0:
                 break
-           
         funCommands(i)
-            
-            
+        
         if i[0] == 'halt':
             break  
     return
 
 def funCommands(i):
+    
     if i[0] == ':=':
         if i[1] in commands:
          commands[i[-1]] = commands[i[1]]
@@ -53,8 +49,7 @@ def funCommands(i):
         print("Give input:")
         temp =  sys.stdin.readline().strip()
         commands[i[1]] = checkString(temp)
-    elif i[0] == 'retv':
-        return commands[i[1]]   
+    
     
     
 def checkString(string):
@@ -70,7 +65,7 @@ def checkString(string):
         
 def printTable():
     print('-')
-    for key, value in results.items():
+    for key, value in commands.items():
         print(key, ":", value)
         
  

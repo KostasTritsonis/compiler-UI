@@ -1,6 +1,5 @@
 program check
 	declare a,b,c,d,f;
-	
 {
 	a:=4;
 	print(a);

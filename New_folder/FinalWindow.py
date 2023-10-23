@@ -25,6 +25,7 @@ class FinalWindow(QMainWindow):
         self.p = subprocess.Popen(script_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
         text = ''
         while self.p.poll() is None:
+            self.show()
             line = self.p.stdout.readline().strip()
             if line:
                 if 'Give input:' in line:
@@ -33,8 +34,8 @@ class FinalWindow(QMainWindow):
                     self.p.stdin.flush()
                 else:
                     text+=line+'\n'
+            self.textEdit.setText(text)
         self.p.stdin.close()
-        self.textEdit.setText(text)
         
     def giveInput(self):
         dialog = InputWindow()

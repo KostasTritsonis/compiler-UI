@@ -1,18 +1,14 @@
-global listofquads
-global cp
 import sys
-
+global listofquads,cp
 
 f=open(sys.argv[1],'r')
-f1=f.read()
 line=1
 listofquads = []
 listoftemp = []
 listofscopes = []
 parameters = []
-countq = 0
+countq = 1
 variableT = 0
-z=0
 
 #conditions
 Cstart=0
@@ -206,14 +202,13 @@ def checkwords(cur):
 
 
 def lex():
-    global z,line,word
+    global line,word
     word=''
     cur=Cstart
     counter=line
     results=[]
-    while(cur>=0 and cur<=6 and z<len(f1)):
-        c = f1[z]
-        z+=1
+    while(cur>=0 and cur<=6):
+        c = f.read(1)
         if(c in alph):
             c_tk = idk
         elif(c in num):
@@ -277,8 +272,7 @@ def lex():
             counter -= 1
 
         word = word[:-1]
-        z-=1
-        c=z
+        c=f.seek(f.tell()-1,0)
 
     if (cur == dig_tk):
         if (int(word)>= pow(2,32)):
@@ -1466,7 +1460,7 @@ def syn():
     return
 
 
-def intFile(intFile):
+def intFile(file):
     text = ""
     for i in range(len(listofquads)):
         q = listofquads[i]
@@ -1475,19 +1469,16 @@ def intFile(intFile):
     
     for i in range(len(listofquads)):
         q = listofquads[i]
-        intFile.write(str(q[0]))
-        intFile.write(":  ")
-        intFile.write(str(q[1]))
-        intFile.write("  ")
-        intFile.write(str(q[2]))
-        intFile.write("  ")
-        intFile.write(str(q[3]))
-        intFile.write("  ")
-        intFile.write(str(q[4]))
-        intFile.write("\n")
+        file.write(str(q[1])+" ")
+        file.write(str(q[2])+" ")
+        file.write(str(q[3])+" ")
+        file.write(str(q[4])+" ")
+        file.write("\n")
         
 if __name__ == '__main__':
+    cp = open('txtFile.txt','w')
     intf = open('intFile.int','w')
     syn()
     intFile(intf)
+    cp.close()
     intf.close()
