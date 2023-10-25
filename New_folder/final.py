@@ -2,8 +2,8 @@ import sys
 instructions = []
 results = {}
 commands = {}
-f = open(sys.argv[1],'r')
-breakpoint = sys.argv[2]
+f = open('intFile.int','r')
+breakpoint = sys.argv[1]
     
 lread = f.readline()
 while lread!='':

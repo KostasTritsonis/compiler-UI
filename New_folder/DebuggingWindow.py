@@ -27,7 +27,7 @@ class DebugWindow(QMainWindow):
         self.close()
         
     def debug(self):
-        script_path  = "python -u {compiler} {current_path} {line}".format(compiler='final.py',current_path='intFile.int',line=breakpoint)
+        script_path  = "python -u {compiler} {line}".format(compiler='final.py',line=breakpoint)
         self.p = subprocess.Popen(script_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
         text = ''
         while self.p.poll() is None:
