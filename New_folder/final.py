@@ -49,15 +49,15 @@ def block():
         if i[0] == 'halt':
             break  
     return
-
+name =''
 def funCommands(i):
-    name = ''
+    global name
     if i[0] == 'begin_block':
         readTable()
         name = i[1]
         
     if i[0] == ':=':
-        if i[-1] in temp[name]:
+        if i[-1] in temp[name] and temp[name][i[-1]]!=0:
          temp[name][i[-1]] = temp[name][i[1]]
         else:
           temp[name][i[-1]] = checkString(i[1])
@@ -70,7 +70,7 @@ def funCommands(i):
     elif i[0] == '*':
       temp[name][i[-1]]  = temp[name][i[1]] * temp[name][i[2]]
     elif i[0] == 'out':
-        print ( temp[name][i[1]])
+        print (temp[name][i[1]])
     elif i[0] == 'inp':
         print("Give input:")
         temp1 =  sys.stdin.readline().strip()
