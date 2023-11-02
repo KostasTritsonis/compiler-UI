@@ -1,7 +1,7 @@
 import sys
 global listofquads,cp
 
-f=open(sys.argv[1],'r')
+f=open('check.ci','r')
 line=1
 listofquads = []
 listoftemp = []
@@ -450,8 +450,9 @@ def write_Symbol_table():
     final_framelength()
     for e in scope.entity:
         cp.write(str(vars(e))+"\n")
-    cp.write("Scope Name: "+scope.name+"\nScope Flength:"+str(scope.totalOffset)+"\nScope NestingLevel:"+str(scope.nestingLevel)+"\n\n") 
-    cp.write("----------------------------------------------------------------------------------\n")
+    scope.entity = []
+    cp.write(str(vars(scope))) 
+    print(vars(scope))
     scope = scope.enScope    
 
 

@@ -2,17 +2,39 @@ import sys
 instructions = []
 results = {}
 commands = {}
+temp = {}
 f = open('intFile.int','r')
-breakpoint = sys.argv[1]
-    
-lread = f.readline()
-while lread!='':
-    lread1 = lread.split(' ')
-    lread1.remove('\n')
-    lread1 = list(filter(('_').__ne__, lread1))
-    instructions.append(lread1)
+f1 = open('txtFile.txt','r')
+breakpoint = "None"   
+
+
+
+def readIntermidiate():
     lread = f.readline()
-f.close()
+    while lread!='':
+        lread1 = lread.split(' ')
+        lread1.remove('\n')
+        lread1 = list(filter(('_').__ne__, lread1))
+        instructions.append(lread1)
+        lread = f.readline()
+    f.close()
+
+def readTable():
+    file_contents = f1.read() 
+    lines = file_contents.split('\n') 
+    data = eval(lines[-1])
+    name = data['name']
+    temp[name] = {}
+    counter = 0
+    for i in range(len(lines)-1): 
+        data = eval(lines[i])
+        temp[name][data['name']] = 0
+        counter+=1
+        if lines[i] == '-':
+            break
+    print(temp)
+    
+    
     
 def block():
     global instructions,lines,commands
@@ -29,26 +51,30 @@ def block():
     return
 
 def funCommands(i):
-    
+    name = ''
+    if i[0] == 'begin_block':
+        readTable()
+        name = i[1]
+        
     if i[0] == ':=':
-        if i[1] in commands:
-         commands[i[-1]] = commands[i[1]]
+        if i[-1] in temp[name]:
+         temp[name][i[-1]] = temp[name][i[1]]
         else:
-         commands[i[-1]] = checkString(i[1])
+          temp[name][i[-1]] = checkString(i[1])
     elif i[0] == '+':
-     commands[i[-1]] = commands[i[1]] + commands[i[2]]
+      temp[name][i[-1]]  = temp[name][i[1]] +  temp[name][i[2]]
     elif i[0] == '/':
-     commands[i[-1]] = commands[i[1]] / commands[i[2]]
+      temp[name][i[-1]]  = temp[name][i[1]] / temp[name][i[2]]
     elif i[0] == '-':
-     commands[i[-1]] = commands[i[1]] - commands[i[2]]
+      temp[name][i[-1]]  = temp[name][i[1]] - temp[name][i[2]]
     elif i[0] == '*':
-     commands[i[-1]] = commands[i[1]] * commands[i[2]]
+      temp[name][i[-1]]  = temp[name][i[1]] * temp[name][i[2]]
     elif i[0] == 'out':
-        print (commands[i[1]])
+        print ( temp[name][i[1]])
     elif i[0] == 'inp':
         print("Give input:")
-        temp =  sys.stdin.readline().strip()
-        commands[i[1]] = checkString(temp)
+        temp1 =  sys.stdin.readline().strip()
+        temp[name][i[1]]  = checkString(temp1)
     
     
     
@@ -81,6 +107,7 @@ def checkBreakpoint():
 
 
 if __name__ == '__main__':
+    readIntermidiate()
     checkBreakpoint()
     block()
     if breakpoint != 'None':

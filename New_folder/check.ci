@@ -1,5 +1,16 @@
 program check
 	declare a,b,c,d,f;
+
+
+function f1()
+{
+
+	a:=2;
+	print(a);
+
+
+}
+
 {
 	a:=4;
 	print(a);
