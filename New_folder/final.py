@@ -57,7 +57,7 @@ def funCommands(i):
         name = i[1]
         
     if i[0] == ':=':
-        if i[-1] in temp[name] and temp[name][i[-1]]!=0:
+        if i[1] in temp[name] and temp[name][i[1]]!=0:
          temp[name][i[-1]] = temp[name][i[1]]
         else:
           temp[name][i[-1]] = checkString(i[1])
