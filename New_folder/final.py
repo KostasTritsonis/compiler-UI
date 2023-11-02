@@ -76,7 +76,9 @@ def funCommands(i):
         temp1 =  sys.stdin.readline().strip()
         temp[name][i[1]]  = checkString(temp1)
     
+    print(temp)
     
+  
     
 def checkString(string):
     if string.isdigit():
