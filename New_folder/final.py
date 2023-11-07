@@ -62,7 +62,7 @@ def funCommands(i):
         else:
           temp[name][i[-1]] = checkString(i[1])
     elif i[0] == '+':
-      temp[name][i[-1]]  = temp[name][i[1]] +  temp[name][i[2]]
+      temp[name][i[-1]]  = temp[name][i[1]] + temp[name][i[2]]
     elif i[0] == '/':
       temp[name][i[-1]]  = temp[name][i[1]] / temp[name][i[2]]
     elif i[0] == '-':
@@ -75,8 +75,8 @@ def funCommands(i):
         print("Give input:")
         temp1 =  sys.stdin.readline().strip()
         temp[name][i[1]]  = checkString(temp1)
-    
-    print(temp)
+    elif i[0] == 'retv':
+        return temp[name][i[1]]
     
   
     

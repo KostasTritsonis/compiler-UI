@@ -1,7 +1,7 @@
 import sys
 global listofquads,cp
 
-f=open('check.ci','r')
+f=open(sys.argv[1],'r')
 line=1
 listofquads = []
 listoftemp = []
@@ -452,7 +452,6 @@ def write_Symbol_table():
         cp.write(str(vars(e))+"\n")
     scope.entity = []
     cp.write(str(vars(scope))) 
-    print(vars(scope))
     scope = scope.enScope    
 
 

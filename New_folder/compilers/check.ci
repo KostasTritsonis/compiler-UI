@@ -1,14 +1,25 @@
 program check
 	declare a,b,c,d,f;
-{
-	a:=4;
-	print(a);
-	input(b);
-	c := a + b;
-	print(c);
-	d := c / a;
-	print(d);
-	input(f);
-	print(f);
+
+
+	function f1()
+	{
+
+		a:=2;
+		print(a);
+
+
+	}
+
+	{
+		a:=4;
+		print(a);
+		input(b);
+		c := a + b;
+		print(c);
+		d := c / a;
+		print(d);
+		input(f);
+		print(f);
 	
-}.
+	}.
