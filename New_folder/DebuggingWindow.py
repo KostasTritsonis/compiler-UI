@@ -33,8 +33,8 @@ class DebugWindow(QMainWindow):
         while self.p.poll() is None:
             line = self.p.stdout.readline().strip()
             if line:
-                if 'Give input:' in line:
-                    self.giveInput()
+                if 'Give input' in line:
+                    self.giveInput(line)
                     self.p.stdin.write(inputValue + "\n")
                     self.p.stdin.flush()
                 if line == '-':
@@ -55,8 +55,9 @@ class DebugWindow(QMainWindow):
         global inputValue
         inputValue = data
         
-    def giveInput(self):
+    def giveInput(self,line):
             dialog = InputWindow()
+            dialog.label.setText(line)
             dialog.dataPassed.connect(self.setInputValue)
             dialog.exec()  
             

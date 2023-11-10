@@ -1,7 +1,5 @@
-global listofquads
-global cp
 import sys
-
+global listofquads,cp
 
 f=open(sys.argv[1],'r')
 line=1
@@ -323,17 +321,6 @@ def merge(list1,list2):
 
     return list3
 
-def newtemp():
-    global variableT,listoftemp
-
-    l = ['T_']
-    l.append(str(variableT))
-    l=''.join(l)
-    listoftemp+=[l]
-    variableT += 1
-    
-    return l
-
 def backpatch(list,z):
     global listofquads
 
@@ -343,6 +330,134 @@ def backpatch(list,z):
                 listofquads[j][4] = z
 
     return 
+
+topScope = None
+
+class Variable:
+    def __init__(self):
+        self.name = ''
+        self.type=''
+        #self.offset = 0
+
+class SubProgram():
+    def __init__(self):
+        self.name =''
+        self.type = ''
+        self.argument = []
+        #self.sQuad = 0
+        #self.framelength = 0
+
+class TempVar():
+    def __init__(self):
+        self.name=''
+        self.type = 'Temp'  
+        #self.offset = 0
+
+class Parameter():
+    def __init__(self):
+        self.name=''
+        self.type = 'Par'
+        self.parMode = '' 
+       # self.offset = 0
+
+class Scope():
+    def __init__(self):
+        self.name = ''
+        self.entity = []
+        self.nestingLevel = 0
+        #self.totalOffset = 12
+        
+#def final_framelength():
+#    for e in topScope.entity:
+#        for a in listofscopes:
+#            if a.name == e.name:
+#                e.framelength = a.totalOffset 
+            
+def new_argument(obj):
+    global topScope
+    topScope.entity[-1].argument.append(obj[0])
+    
+def new_parameters(obj):
+    global topScope
+    parameters.append(obj)
+              
+def new_entity(obj):
+    global topScope
+    
+    topScope.entity.append(obj)
+    
+def newtemp():
+    global variableT,listoftemp
+
+    l = ['T_']
+    l.append(str(variableT))
+    l=''.join(l)
+    listoftemp+=[l]
+    variableT += 1
+
+    e = TempVar()                             
+    e.type = 'Temp'                           
+    e.name = l
+    #e.offset = topScope.totalOffset 
+    #topScope.totalOffset += 4                        
+    new_entity(e)   
+
+    return l
+
+def new_scope(name):
+    global topScope
+    nextScope = Scope()
+    nextScope.name = name
+    nextScope.enScope = topScope
+    if(topScope == None):
+        nextScope.nestingLevel = 0
+    else:
+        nextScope.nestingLevel = topScope.nestingLevel + 1
+
+    topScope = nextScope
+    listofscopes.append(topScope)
+
+def delete_scope():
+    global topScope
+    
+    delScope = topScope
+    topScope = topScope.enScope
+
+    del delScope
+    
+def add_parameters():
+    global topScope
+    for a in parameters:
+        e = Parameter()
+        e.name = a[1]
+        e.type = 'Par'
+        e.parMode = a[0]
+        #e.offset = topScope.totalOffset
+        #topScope.totalOffset += 4
+        new_entity(e)
+    parameters.clear()   
+
+
+#def patchStart(quadNo):
+    #global listofscopes
+
+    #if len(listofscopes) < 2: return
+    #topScope.enScope.entity[-1].sQuad = quadNo
+
+def write_Symbol_table():
+    global topScope,cp
+    scope=topScope
+    #final_framelength()
+    for e in scope.entity:
+        cp.write(str(vars(e))+"\n")
+    scope.entity = []
+    temp = dict(vars(scope))
+    del temp["enScope"]
+    cp.write(str(temp)+"\n")
+    cp.write("-\n") 
+    scope = scope.enScope    
+
+
 
 def syn():
     global line,lex1
@@ -380,6 +495,10 @@ def syn():
             exit(1)
 
     def block(token,halt):
+        new_scope(token)
+        if halt != -1:
+            add_parameters()
+        #patchStart(nextquad())
         declarations()
         subprograms()
         genquad('begin_block',token,'_','_')
@@ -387,6 +506,8 @@ def syn():
         if(halt == -1):
             genquad('halt','_','_','_')
         genquad('end_block',token,'_','_')
+        write_Symbol_table()
+        delete_scope()
 
     def declarations():
         global lex1,line
@@ -407,9 +528,17 @@ def syn():
         return
 
     def varlist():
-        global lex1,line
+        global lex1,line,topScope
         
-        if(lex1[0] == idk_tk):            
+        if(lex1[0] == idk_tk):
+            
+            e = Variable()                          
+            e.type = 'Var'                       
+            e.name = lex1[1] 
+            #e.offset = topScope.totalOffset
+            #topScope.totalOffset += 4
+            new_entity(e) 
+            
             lex1 = lex()
             line = lex1[2]
             
@@ -418,11 +547,19 @@ def syn():
                 line = lex1[2]
                 
                 if(lex1[0] == idk_tk):
+
+                    e = Variable()                          
+                    e.type = 'Var'                       
+                    e.name = lex1[1] 
+                   # e.offset = topScope.totalOffset
+                   # topScope.totalOffset += 4
+                    new_entity(e)   
+
                     lex1 = lex()
                     line = lex1[2]
 
                 else:
-                    print("ERROR:There is not \",\" before variable or between the variables in line ",line)
+                    print("ERROR:There is not \",\" before variable  or between the variables in line ",line)
                     exit(1)
         return
 
@@ -439,10 +576,15 @@ def syn():
             lex1 = lex()
             line = lex1[2]  
             if(lex1[0] == idk_tk):
+                
                 token = lex1[1]
+                e = SubProgram()                                      
+                e.name = token
+                e.type = 'function'
+                new_entity(e)
+                
                 lex1 = lex()
                 line = lex1[2]
-               
 
                 if(lex1[0] == lquotation_mark_tk):
                     lex1 = lex()
@@ -457,15 +599,15 @@ def syn():
                         return
 
                     else:
-                        print("ERROR:There is not a \")\" at line ",line)
+                        print("ERROR:There is not a \")\"  at line ",line)
                         exit(1)
 
                 else:
-                    print("ERROR:There is not a \"(\" at line ",line)
+                    print("ERROR:There is not a \"(\"  at line ",line)
                     exit(1)
 
             else:
-                print("ERROR:Expected variable's name after function at line",line)
+                print("ERROR:Expected variable's name after function  at line",line)
                 exit(1)
 
         elif(lex1[0] == procedure_tk):
@@ -473,7 +615,13 @@ def syn():
             line = lex1[2]
 
             if(lex1[0] == idk_tk):
+                
                 token = lex1[1]
+                e = SubProgram()                                      
+                e.name = token
+                e.type = 'procedure'
+                new_entity(e)
+                 
                 lex1 = lex()
                 line = lex1[2]
 
@@ -497,7 +645,7 @@ def syn():
                     exit(1)
 
             else:
-                print("ERROR:Expected variable after procedure at line",line)
+                print("ERROR:Expected variable after procedure  at line",line)
                 exit(1)
         
     def formalparlist():
@@ -513,13 +661,16 @@ def syn():
         return
 
     def formalparitem():
-        global lex1,line
+        global lex1,line,topScope
+        par = ()
         if(lex1[0] == in_tk):
             lex1 = lex()
             line = lex1[2]
 
             if(lex1[0] == idk_tk): 
                 
+                par = ('cv',lex1[1])
+                new_parameters(par)
                 lex1 = lex()
                 line = lex1[2]
 
@@ -532,14 +683,17 @@ def syn():
             line = lex1[2]
 
             if(lex1[0] == idk_tk):
+                
+                par = ('ref',lex1[1])
+                new_parameters(par)
                 lex1 = lex()
                 line = lex1[2]
 
             else:
                 print("ERROR:Expected variable name after \"inout\" in line ",line)
                 exit(1)
-        
-        return
+        new_argument(par)
+        return par
 
     def statements():
         global lex1,line
@@ -759,11 +913,11 @@ def syn():
                 backpatch(exitlist,nextquad())
 
             else:
-                print("ERROR:An error occured during the \"default\" in line ",line)
+                print("ERROR:An error occured during the \"default\"  in line ",line)
                 exit(1)
 
         else:
-            print("ERROR:An error occured during the \"switchcase\" in line ",line)
+            print("ERROR:An error occured during the \"switchcase\"  in line ",line)
             exit(1)
 
     def forcaseStat():
@@ -808,11 +962,11 @@ def syn():
                 statements()
 
             else:
-                print("ERROR:An error occured during the \"default\" in line ",line)
+                print("ERROR:An error occured during the \"default\"  in line ",line)
                 exit(1)
 
         else:
-            print("ERROR:An error occured during the \"forcase\" in line ",line)
+            print("ERROR:An error occured during the \"forcase\"  in line ",line)
             exit(1)
 
     def incaseStat():
@@ -851,7 +1005,7 @@ def syn():
                     exit(1)
             genquad(':=',w,0,Bquad)            
         else:
-            print("ERROR:An error occured during the \"incase\" in line ",line)
+            print("ERROR:An error occured during the \"incase\"  in line ",line)
             exit(1)
 
     def returnStat():
@@ -992,7 +1146,7 @@ def syn():
                 exit(1)
 
         else:
-            print("ERROR:An error occured during the \"input\" in line ",line)
+            print("ERROR:An error occured during the \"input\"  in line ",line)
             exit(1)
 
 
@@ -1308,12 +1462,12 @@ def syn():
 
     return
 
+
 def intFile(file):
     text = ""
     for i in range(len(listofquads)):
         q = listofquads[i]
         text += str(q[1])+" "+str(q[2])+" "+str(q[3])+" "+str(q[4])+"\n"
-
     print(text)
     
     for i in range(len(listofquads)):
@@ -1325,8 +1479,9 @@ def intFile(file):
         file.write("\n")
         
 if __name__ == '__main__':
+    cp = open('txtFile.txt','w')
     intf = open('intFile.int','w')
     syn()
     intFile(intf)
+    cp.close()
     intf.close()
-

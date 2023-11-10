@@ -1,13 +1,11 @@
 import sys
-instructions = []
-results = {}
-commands = {}
-temp = {}
+instructions,table = [],[]
+results,commands,temp = {},{},{}
+
+
 f = open('intFile.int','r')
 f1 = open('txtFile.txt','r')
 breakpoint = "None"   
-
-
 
 def readIntermidiate():
     lread = f.readline()
@@ -17,22 +15,29 @@ def readIntermidiate():
         lread1 = list(filter(('_').__ne__, lread1))
         instructions.append(lread1)
         lread = f.readline()
-    f.close()
 
-def readTable():
     file_contents = f1.read() 
-    lines = file_contents.split('\n') 
-    data = eval(lines[-1])
+    lines = file_contents.strip().split('-')
+    del lines[-1]
+    for i in range(len(lines)):
+        temp1 = lines[i].split("\n")
+        if temp1[0] == '':
+            del temp1[0]
+        if temp1[-1] == '':
+            del temp1[-1]
+        table.append(temp1)
+    
+    f.close()
+    f1.close()
+
+def readTable(number):
+    
+    data = eval(table[number][-1])
     name = data['name']
     temp[name] = {}
-    counter = 0
-    for i in range(len(lines)-1): 
-        data = eval(lines[i])
+    for i in range(len(table[number])-1): 
+        data = eval(table[number][i])
         temp[name][data['name']] = 0
-        counter+=1
-        if lines[i] == '-':
-            break
-    print(temp)
     
     
     
@@ -49,35 +54,50 @@ def block():
         if i[0] == 'halt':
             break  
     return
+    
+
+
 name =''
+counter=0
+code = ''
+listOfCode = []
 def funCommands(i):
-    global name
+    global counter,name,code
     if i[0] == 'begin_block':
-        readTable()
+        code += 'def {func}():\n'.format(func=i[1])
+        readTable(counter)
         name = i[1]
-        
     if i[0] == ':=':
         if i[1] in temp[name] and temp[name][i[1]]!=0:
          temp[name][i[-1]] = temp[name][i[1]]
         else:
           temp[name][i[-1]] = checkString(i[1])
     elif i[0] == '+':
-      temp[name][i[-1]]  = temp[name][i[1]] + temp[name][i[2]]
+        code+= '\t{a} + {b}\n'.format(a=temp[name][i[1]],b=temp[name][i[2]])
+        temp[name][i[-1]]  = temp[name][i[1]] + temp[name][i[2]]
     elif i[0] == '/':
-      temp[name][i[-1]]  = temp[name][i[1]] / temp[name][i[2]]
+        code+= '\t{a} / {b}\n'.format(a=temp[name][i[1]],b=temp[name][i[2]])
+        temp[name][i[-1]]  = temp[name][i[1]] / temp[name][i[2]]
     elif i[0] == '-':
-      temp[name][i[-1]]  = temp[name][i[1]] - temp[name][i[2]]
+        code+= '\t{a} - {b}\n'.format(a=temp[name][i[1]],b=temp[name][i[2]])
+        temp[name][i[-1]]  = temp[name][i[1]] - temp[name][i[2]]
     elif i[0] == '*':
-      temp[name][i[-1]]  = temp[name][i[1]] * temp[name][i[2]]
+        code+= '\t{a} * {b}\n'.format(a=temp[name][i[1]],b=temp[name][i[2]])
+        temp[name][i[-1]]  = temp[name][i[1]] * temp[name][i[2]]
     elif i[0] == 'out':
+        code+= '\tprint({c})\n'.format(c=temp[name][i[1]])
         print (temp[name][i[1]])
     elif i[0] == 'inp':
-        print("Give input:")
+        print("Give input for {value}:".format(value=i[1]))
         temp1 =  sys.stdin.readline().strip()
         temp[name][i[1]]  = checkString(temp1)
     elif i[0] == 'retv':
-        return temp[name][i[1]]
-    
+        code+='\treturn {d}\n\n'.format(d=temp[name][i[1]])
+    elif i[0] == 'end_block':
+        counter+=1
+        listOfCode.append(code)
+    elif i[0] == '=' or  i[0] == '<' or  i[0] == '>' or  i[0] == '!=':
+        code+= '\tif {a} {b} {c}:\n'.format(a=i[1],b=i[0],c=i[2])
   
     
 def checkString(string):
@@ -114,4 +134,5 @@ if __name__ == '__main__':
     block()
     if breakpoint != 'None':
         printTable()
+    print(code)
 

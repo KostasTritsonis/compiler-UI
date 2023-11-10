@@ -1,24 +1,12 @@
-{'name': 'x', 'type': 'Par', 'parMode': 'cv', 'offset': 12}
-{'name': 'y', 'type': 'Par', 'parMode': 'cv', 'offset': 16}
-{'name': 'T_0', 'type': 'Temp', 'offset': 20}
-{'name': 'add', 'entity': [], 'nestingLevel': 1, 'totalOffset': 24, 'enScope': <__main__.Scope object at 0x0000019F1B049F50>}{'name': 'x', 'type': 'Par', 'parMode': 'cv', 'offset': 12}
-{'name': 'y', 'type': 'Par', 'parMode': 'cv', 'offset': 16}
-{'name': 'T_1', 'type': 'Temp', 'offset': 20}
-{'name': 'sub', 'entity': [], 'nestingLevel': 1, 'totalOffset': 24, 'enScope': <__main__.Scope object at 0x0000019F1B049F50>}{'name': 'x', 'type': 'Par', 'parMode': 'cv', 'offset': 12}
-{'name': 'y', 'type': 'Par', 'parMode': 'cv', 'offset': 16}
-{'name': 'T_2', 'type': 'Temp', 'offset': 20}
-{'name': 'mul', 'entity': [], 'nestingLevel': 1, 'totalOffset': 24, 'enScope': <__main__.Scope object at 0x0000019F1B049F50>}{'name': 'x', 'type': 'Par', 'parMode': 'cv', 'offset': 12}
-{'name': 'y', 'type': 'Par', 'parMode': 'cv', 'offset': 16}
-{'name': 'T_3', 'type': 'Temp', 'offset': 20}
-{'name': 'divide', 'entity': [], 'nestingLevel': 1, 'totalOffset': 24, 'enScope': <__main__.Scope object at 0x0000019F1B049F50>}{'name': 'choice', 'type': 'Var', 'offset': 12}
-{'name': 'x', 'type': 'Var', 'offset': 16}
-{'name': 'y', 'type': 'Var', 'offset': 20}
-{'name': 'add', 'type': 'function', 'argument': ['cv', 'cv'], 'sQuad': 1, 'framelength': 24}
-{'name': 'sub', 'type': 'function', 'argument': ['cv', 'cv'], 'sQuad': 5, 'framelength': 24}
-{'name': 'mul', 'type': 'function', 'argument': ['cv', 'cv'], 'sQuad': 9, 'framelength': 24}
-{'name': 'divide', 'type': 'function', 'argument': ['cv', 'cv'], 'sQuad': 13, 'framelength': 24}
-{'name': 'T_4', 'type': 'Temp', 'offset': 24}
-{'name': 'T_5', 'type': 'Temp', 'offset': 28}
-{'name': 'T_6', 'type': 'Temp', 'offset': 32}
-{'name': 'T_7', 'type': 'Temp', 'offset': 36}
-{'name': 'calculator', 'entity': [], 'nestingLevel': 0, 'totalOffset': 40, 'enScope': None}
+{'name': 'x', 'type': 'Par', 'parMode': 'cv'}
+{'name': 'y', 'type': 'Par', 'parMode': 'cv'}
+{'name': 'T_0', 'type': 'Temp'}
+{'name': 'add', 'entity': [], 'nestingLevel': 1}
+-
+{'name': 'choice', 'type': 'Var'}
+{'name': 'x', 'type': 'Var'}
+{'name': 'y', 'type': 'Var'}
+{'name': 'add', 'type': 'function', 'argument': ['cv', 'cv']}
+{'name': 'T_1', 'type': 'Temp'}
+{'name': 'calculator', 'entity': [], 'nestingLevel': 0}
+-

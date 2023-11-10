@@ -33,10 +33,10 @@ color:#FFFFFF;
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>100</x>
      <y>40</y>
      <width>61</width>
-     <height>16</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
