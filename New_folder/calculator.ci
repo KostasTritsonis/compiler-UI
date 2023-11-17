@@ -5,6 +5,18 @@ program calculator
 	{
 		return (x + y);
 	}
+	function sub(in x, in y)
+	{
+		return (x - y);
+	}
+	function mul(in x, in y)
+	{
+		return (x * y);
+	}
+	function divide(in x, in y)
+	{
+		return (x / y);
+	}
 	#main program!!!#
 	{
 		input(choice);
@@ -13,6 +25,11 @@ program calculator
 		if (choice = 1)
 		{
 			print(add(in x, in y));
+			print(sub(in x, in y));
 		}
-		
+		else
+		{
+			print(mul(in x, in y));
+			print(divide(in x, in y));
+		}
 	}.
