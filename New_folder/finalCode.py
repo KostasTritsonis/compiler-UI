@@ -16,8 +16,8 @@ def divide(x,y):
 
 def calculator():
 	choice = 3
-	x = 33
-	y = 3
+	x = 2
+	y = 1
 	if choice == 1:
 		T_4 = add(x,y)
 		print(T_4)

@@ -1,15 +1,10 @@
-import sys
+import sys,subprocess
 instructions,table = [],[]
 results,commands,temp = {},{},{}
 
-
-
-
-
-
 f = open('intFile.int','r')
 f1 = open('txtFile.txt','r')
-breakpoint = "None"   
+breakpoint = sys.argv[1]   
 
 def readIntermidiate():
     lread = f.readline()
@@ -107,7 +102,6 @@ def funCommands(i):
         
     elif i[0] == 'out':
         code.write(totalSpace*'\t'+'print({c})\n'.format(c=i[1]))
-        print (temp[name][i[1]])
         
     elif i[0] == 'inp':
         print("Give input for {value}:".format(value=i[1]))
@@ -200,5 +194,6 @@ if __name__ == '__main__':
     readIntermidiate()
     checkBreakpoint()
     block()
+    subprocess.run(['python', 'finalCode.py'])
     if breakpoint != 'None':
         printTable()

@@ -28,8 +28,9 @@ class FinalWindow(QMainWindow):
             self.show()
             line = self.p.stdout.readline().strip()
             if line:
-                if 'Give input:' in line:
-                    self.giveInput()
+                if 'Give input' in line:
+                    print(1)
+                    self.giveInput(line)
                     self.p.stdin.write(inputValue + "\n")
                     self.p.stdin.flush()
                 else:
@@ -37,11 +38,13 @@ class FinalWindow(QMainWindow):
             self.textEdit.setText(text)
         self.p.stdin.close()
         
-    def giveInput(self):
+    def giveInput(self,line):
         dialog = InputWindow()
+        dialog.label.setText(line)
         dialog.dataPassed.connect(self.setInputValue)
         dialog.exec()  
         
     def setInputValue(self,data):
         global inputValue
         inputValue = data
+
