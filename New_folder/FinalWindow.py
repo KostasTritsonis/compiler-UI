@@ -29,7 +29,6 @@ class FinalWindow(QMainWindow):
             line = self.p.stdout.readline().strip()
             if line:
                 if 'Give input' in line:
-                    print(1)
                     self.giveInput(line)
                     self.p.stdin.write(inputValue + "\n")
                     self.p.stdin.flush()

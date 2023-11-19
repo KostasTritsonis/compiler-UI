@@ -375,7 +375,8 @@ class Scope():
             
 def new_argument(obj):
     global topScope
-    topScope.entity[-1].argument.append(obj[0])
+    if len(obj)!= 0:
+        topScope.entity[-1].argument.append(obj[0])
     
 def new_parameters(obj):
     global topScope
@@ -498,7 +499,6 @@ def syn():
         new_scope(token)
         if halt != -1:
             add_parameters()
-        #patchStart(nextquad())
         declarations()
         subprograms()
         genquad('begin_block',token,'_','_')

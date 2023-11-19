@@ -4,7 +4,7 @@ results,commands,temp = {},{},{}
 
 f = open('intFile.int','r')
 f1 = open('txtFile.txt','r')
-breakpoint = sys.argv[1]   
+breakpoint = 'None' 
 
 def readIntermidiate():
     lread = f.readline()
@@ -44,18 +44,20 @@ def readTable(number):
 def block():
     global instructions,lines,commands,numpass
     numpass = -1
-    for i in instructions:
+    i=0
+    while  i < len(instructions):
         
-        if i[0] == 'halt':
+        if instructions[i][0] == 'halt':
             break  
         
         if lines != None:
             lines -=1
             if lines == 0:
                 break
-        if numpass == -1 or instructions.index(i) == int(numpass)-1:
-            numpass = funCommands(i)
-            
+        if numpass == -1 or i == int(numpass)-1:
+            numpass = funCommands(instructions[i])
+          
+        i+=1  
     code.write('\n{a}()'.format(a=list(temp)[-1]))
     code.close()
     return
@@ -71,14 +73,14 @@ def funCommands(i):
     global counter,name,code,par,totalSpace
     
     if i[0] == 'begin_block':
-        code.write('def {func}():\n'.format(func=i[1]))
         totalSpace = readTable(counter)
-        if totalSpace == 0:
-            totalSpace+=1
+        code.write(totalSpace*'\t'+'def {func}():\n'.format(func=i[1]))
         name = i[1]
+        totalSpace+=1   
         
     elif i[0] == ':=':
         code.write(totalSpace*'\t'+'{c} = {a}\n'.format(a=i[-1],c=i[1]))
+        
         if i[1] in temp[name] and temp[name][i[1]]!=0:
          temp[name][i[-1]] = temp[name][i[1]]
         else:
@@ -197,3 +199,4 @@ if __name__ == '__main__':
     subprocess.run(['python', 'finalCode.py'])
     if breakpoint != 'None':
         printTable()
+    print(temp)

@@ -408,8 +408,6 @@ def new_argument(obj):
     global topScope
 
     topScope.entity[-1].subprogram.argument.append(obj)
-    for a in topScope.entity[-1].subprogram.argument:
-        print(a.name)
 
 def new_entity(obj):
     global topScope
