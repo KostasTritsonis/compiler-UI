@@ -1,10 +1,13 @@
 import sys
-instructions,table = [],[]
-results,commands,temp = {},{},{}
+
+name= ''
+counter,totalSpace,returnedValue=0,0,0
+par,code,instructions,table =[],[],[],[]
+listofCode,results = {},{} 
 
 f = open('intFile.int','r')
 f1 = open('txtFile.txt','r')
-breakpoint = 'None' 
+breakpoint = 'None'
 
 def readIntermidiate():
     lread = f.readline()
@@ -19,12 +22,12 @@ def readIntermidiate():
     lines = file_contents.strip().split('-')
     del lines[-1]
     for i in range(len(lines)):
-        temp1 = lines[i].split("\n")
-        if temp1[0] == '':
-            del temp1[0]
-        if temp1[-1] == '':
-            del temp1[-1]
-        table.append(temp1)
+        tmp = lines[i].split("\n")
+        if tmp[0] == '':
+            del tmp[0]
+        if tmp[-1] == '':
+            del tmp[-1]
+        table.append(tmp)
     
     f.close()
     f1.close()
@@ -32,18 +35,17 @@ def readIntermidiate():
 def readTable(number):
     data = eval(table[number][-1])
     name = data['name']
-    temp[name] = {}
+    results[name] = {}
     totalSpace = int(data['nestingLevel'])
     for i in range(len(table[number])-1): 
         data = eval(table[number][i])
-        temp[name][data['name']] = 1
+        results[name][data['name']] = 0
     return totalSpace
     
     
     
 def block():
-    global instructions,lines,commands
-    
+    global instructions,lines
     i=0
     while  i < len(instructions):
         if instructions[i][0] == 'halt':
@@ -56,54 +58,49 @@ def block():
        
         j = funCommands(instructions[i])
         if j!=-1:
-            i=int(j)
+            i=j
         else:
             i+=1  
-    return
- 
- 
- 
-name= ''
-counter,totalSpace=0,0
-par,code =[],[]
-listofCode = {}   
-
+    return 
 def funCommands(i):
-    global counter,name,par,totalSpace,code,return1
+    global counter,name,par,totalSpace,code,returnedValue
+
     code.append(i)
     if i[0] == 'begin_block':
         totalSpace = readTable(counter)
-       
         name = i[1]
-        totalSpace+=1       
+        totalSpace+=1   
+
     elif i[0] == ':=':
-        if i[1] in temp[name] and temp[name][i[1]]!=0:
-         temp[name][i[-1]] = temp[name][i[1]]
+        if i[1] in results[name] and results[name][i[1]]!=0:
+         results[name][i[-1]] = results[name][i[1]]
         else:
-          temp[name][i[-1]] = checkString(i[1])  
+          results[name][i[-1]] = checkString(i[1])  
             
     elif i[0] == '+':
-        temp[name][i[-1]]  = temp[name][i[1]] + temp[name][i[2]]
+        results[name][i[-1]]  = results[name][i[1]] + results[name][i[2]]
         
     elif i[0] == '/':
-        temp[name][i[-1]]  = temp[name][i[1]] / temp[name][i[2]]
+        if results[name][i[1]] != 0 and results[name][i[2]] != 0:
+            results[name][i[-1]]  = results[name][i[1]] / results[name][i[2]]
         
     elif i[0] == '-':
-        temp[name][i[-1]]  = temp[name][i[1]] - temp[name][i[2]]
+        results[name][i[-1]]  = results[name][i[1]] - results[name][i[2]]
         
     elif i[0] == '*':
-        temp[name][i[-1]]  = temp[name][i[1]] * temp[name][i[2]]
+        results[name][i[-1]]  = results[name][i[1]] * results[name][i[2]]
         
     elif i[0] == 'out':
-       print(temp[name][i[1]])
+       print('The value of {a} is {b}'.format(a=i[1],b=results[name][i[1]]))
         
     elif i[0] == 'inp':
         print("Give input for {value}:".format(value=i[1]))
         temp1 =  sys.stdin.readline().strip()
-        temp[name][i[1]]  = checkString(temp1)
+        results[name][i[1]]  = checkString(temp1)
         
     elif i[0] == 'retv':
-        return1 =  temp[name][i[1]]
+        if returnedValue != 0:
+            results[name][returnedValue] = results[name][i[1]]
         
     elif i[0] == 'end_block':
         del code[0]
@@ -112,25 +109,55 @@ def funCommands(i):
         counter+=1
         code=[]
         
-    elif i[0] == '=' or  i[0] == '<' or  i[0] == '>' or  i[0] == '!=' :
-        return i[-1]
+    elif i[0] == '=' or  i[0] == '<' or  i[0] == '>':
+
+        i[1] = checkString(i[1])
+        i[2] = checkString(i[2])
+
+        if type(i[1]) is str:
+            i[1] = results[name][i[1]]
+
+        if type(i[2]) is str:
+            i[2] = results[name][i[2]]
+       
+        if i[0] == '=':
+            if i[1] == i[2]:
+                return int(i[-1])-1
+        elif i[0] == '<':
+            if i[1] < i[2]:
+                return int(i[-1])-1
+        elif i[0] == '>':
+            if i[1] > i[2]:
+                return int(i[-1])-1
+        
         
     elif i[0] == 'par':
-            
         if i[2] == 'RET':
-            temp[name][i[1]] = return1
+            returnedValue = i[1]
         else:
-            par.append(i[1])  
+            par.append([i[1],i[2]])  
     
     elif i[0] == 'jump':
-        return i[-1]   
+        return int(i[-1])-1   
     
     elif i[0] == 'call':
+        for parameter in par:
+            if parameter[1] == 'CV':
+                for variable in results[i[1]].keys():
+                    if variable == parameter[0]:
+                        results[i[1]][variable] = results[name][variable]
+
         for i in listofCode[i[1]]:
             funCommands(i)
-             
-   
-          
+
+        for parameter in par:
+            if parameter[1] == 'REF':
+                for variable in results[i[1]].keys():
+                    if variable == parameter[0]:
+                        results[name][variable] = results[i[1]][variable]
+
+        par = []
+                
     return -1
             
     
@@ -148,7 +175,7 @@ def checkString(string):
         
 def printTable():
     print('-')
-    for key, value in commands.items():
+    for key, value in results.items():
         print(key, ":", value)
         
  
@@ -169,4 +196,4 @@ if __name__ == '__main__':
     block()
     if breakpoint != 'None':
         printTable()
-    print(temp)
+    print(results)
