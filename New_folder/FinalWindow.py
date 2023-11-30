@@ -3,7 +3,7 @@ from PyQt6 import QtGui
 from PyQt6.uic import loadUi
 from DebuggingWindow import *
 from InputWindow import *
-
+from ErrorWindow import *
 
 class FinalWindow(QMainWindow):
     inputValue = ''
@@ -25,7 +25,6 @@ class FinalWindow(QMainWindow):
         self.p = subprocess.Popen(script_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
         text = ''
         while self.p.poll() is None:
-            self.show()
             line = self.p.stdout.readline().strip()
             if line:
                 if 'Give input' in line:

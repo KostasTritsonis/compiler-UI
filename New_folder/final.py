@@ -1,13 +1,13 @@
 import sys
 
-name= ''
-counter,totalSpace,returnedValue=0,0,0
+name,currentName= '',''
+counter,returnedValue=0,0
 par,code,instructions,table =[],[],[],[]
-listofCode,results = {},{} 
+listofCode,results,globalVariables = {},{},{}
 
 f = open('intFile.int','r')
 f1 = open('txtFile.txt','r')
-breakpoint = 'None'
+breakpoint = sys.argv[1]
 
 def readIntermidiate():
     lread = f.readline()
@@ -33,19 +33,21 @@ def readIntermidiate():
     f1.close()
 
 def readTable(number):
-    data = eval(table[number][-1])
-    name = data['name']
+    tempData = eval(table[number][-1])
+    name = tempData['name']
     results[name] = {}
-    totalSpace = int(data['nestingLevel'])
-    for i in range(len(table[number])-1): 
+    nestingLevel = int(tempData['nestingLevel'])
+    for i in range(len(table[number])-1):
         data = eval(table[number][i])
+        if nestingLevel == 0 and data['type'] == 'Var':
+            globalVariables[data['name']] = 0 
         results[name][data['name']] = 0
-    return totalSpace
-    
-    
-    
+    results[name]['nestingLevel'] = nestingLevel
+
+       
 def block():
     global instructions,lines
+
     i=0
     while  i < len(instructions):
         if instructions[i][0] == 'halt':
@@ -62,36 +64,55 @@ def block():
         else:
             i+=1  
     return 
+
 def funCommands(i):
-    global counter,name,par,totalSpace,code,returnedValue
+    global counter,name,par,code,returnedValue,currentName
 
     code.append(i)
     if i[0] == 'begin_block':
-        totalSpace = readTable(counter)
-        name = i[1]
-        totalSpace+=1   
+        readTable(counter)
+        name = i[1]   
 
     elif i[0] == ':=':
-        if i[1] in results[name] and results[name][i[1]]!=0:
-         results[name][i[-1]] = results[name][i[1]]
+        temp = checkString(i[1]) 
+
+        if type(temp) is str:
+            results[name][i[-1]] = results[name][i[1]]
         else:
-          results[name][i[-1]] = checkString(i[1])  
+            results[name][i[-1]] = temp 
+
+    if i[0] == '+' or i[0] == '/' or i[0] == '-' or i[0] == '*':
+
+        op1 = checkString(i[1])
+        op2 = checkString(i[2])
+
+        if type(op1) is str:
+            op1 = results[name][i[1]]
+
+        if type(op2) is str:
+            op2 = results[name][i[2]]
+
+        if i[0] == '+':
+            results[name][i[-1]]  = op1 + op2
             
-    elif i[0] == '+':
-        results[name][i[-1]]  = results[name][i[1]] + results[name][i[2]]
-        
-    elif i[0] == '/':
-        if results[name][i[1]] != 0 and results[name][i[2]] != 0:
-            results[name][i[-1]]  = results[name][i[1]] / results[name][i[2]]
-        
-    elif i[0] == '-':
-        results[name][i[-1]]  = results[name][i[1]] - results[name][i[2]]
-        
-    elif i[0] == '*':
-        results[name][i[-1]]  = results[name][i[1]] * results[name][i[2]]
+        elif i[0] == '/':
+            if op1 != 0 and op2 != 0:
+                results[name][i[-1]]  = op1 / op2
+            
+        elif i[0] == '-':
+            results[name][i[-1]]  = op1 - op2
+            
+        elif i[0] == '*':
+            results[name][i[-1]]  = op1 * op2
         
     elif i[0] == 'out':
-       print('The value of {a} is {b}'.format(a=i[1],b=results[name][i[1]]))
+
+        temp = checkString(i[1]) 
+
+        if type(temp) is str:
+            temp = results[name][i[1]]
+
+        print('The value of {a} is {b}'.format(a=i[1],b=temp))
         
     elif i[0] == 'inp':
         print("Give input for {value}:".format(value=i[1]))
@@ -100,7 +121,7 @@ def funCommands(i):
         
     elif i[0] == 'retv':
         if returnedValue != 0:
-            results[name][returnedValue] = results[name][i[1]]
+            results[currentName][returnedValue] = results[name][i[1]]
         
     elif i[0] == 'end_block':
         del code[0]
@@ -111,26 +132,25 @@ def funCommands(i):
         
     elif i[0] == '=' or  i[0] == '<' or  i[0] == '>':
 
-        i[1] = checkString(i[1])
-        i[2] = checkString(i[2])
+        temp1 = checkString(i[1])
+        temp2 = checkString(i[2])
 
-        if type(i[1]) is str:
-            i[1] = results[name][i[1]]
+        if type(temp1) is str:
+            temp1 = results[name][i[1]]
 
-        if type(i[2]) is str:
-            i[2] = results[name][i[2]]
+        if type(temp2) is str:
+            temp2 = results[name][i[2]]
        
         if i[0] == '=':
-            if i[1] == i[2]:
+            if temp1 == temp2:
                 return int(i[-1])-1
         elif i[0] == '<':
-            if i[1] < i[2]:
+            if temp1 < temp2:
                 return int(i[-1])-1
         elif i[0] == '>':
-            if i[1] > i[2]:
+            if temp1 > temp2:
                 return int(i[-1])-1
-        
-        
+                
     elif i[0] == 'par':
         if i[2] == 'RET':
             returnedValue = i[1]
@@ -141,15 +161,23 @@ def funCommands(i):
         return int(i[-1])-1   
     
     elif i[0] == 'call':
+        currentName = name
+
+        if i[1] not in results:
+            print('There is not function with name:',i[1])
+            exit(1)
+
         for parameter in par:
             if parameter[1] == 'CV':
                 for variable in results[i[1]].keys():
                     if variable == parameter[0]:
                         results[i[1]][variable] = results[name][variable]
 
-        for i in listofCode[i[1]]:
-            funCommands(i)
+        name = i[1]
+        for j in listofCode[i[1]]:
+            funCommands(j)
 
+        name = currentName
         for parameter in par:
             if parameter[1] == 'REF':
                 for variable in results[i[1]].keys():
@@ -157,11 +185,10 @@ def funCommands(i):
                         results[name][variable] = results[i[1]][variable]
 
         par = []
-                
-    return -1
+
             
-    
-   
+    return -1
+               
 def checkString(string):
     if string.isdigit():
         return int(string)
@@ -171,15 +198,12 @@ def checkString(string):
             return float(string)
         except ValueError:
             return string
-        
-        
+            
 def printTable():
     print('-')
     for key, value in results.items():
         print(key, ":", value)
         
- 
- 
 def checkBreakpoint():
     global lines,breakpoint
     
@@ -196,4 +220,3 @@ if __name__ == '__main__':
     block()
     if breakpoint != 'None':
         printTable()
-    print(results)

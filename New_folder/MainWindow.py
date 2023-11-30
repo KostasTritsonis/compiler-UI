@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import  QMainWindow, QFileDialog,QApplication
-from PyQt6.QtCore import Qt,QProcess
+from PyQt6.QtCore import Qt
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
 from IntermidiateWindow import *
@@ -84,30 +84,18 @@ class MainWindow(QMainWindow):
         self.textEdit.paste()
 
     def compile(self):
-        self.p = QProcess()
         if self.compiler == '' or self.compiler == None :
             self.win2 = ErrorWindow()
             self.win2.show()
             self.win2.label.setText("Choose Compiler first")
-            self.win2.setWindowTitle("Error Window")  
-            return
-        script_path  = "python {compiler} {current_path}".format(current_path=self.current_path,compiler=self.compiler)
-        self.p.startCommand(script_path)
-        if(self.p.waitForFinished() == False):
-            return
-        output = self.p.readAllStandardOutput().data().decode()
-        error = self.p.exitCode()
-        if error == 1:
-            self.err = ErrorWindow()
-            self.err.show()
-            self.err.label.setText(output)
-            self.err.setWindowTitle("Error Window")  
+            self.win2.setWindowTitle("Error Window") 
         else:
             self.window1 = IntermidiateWindow()
-            self.window1.show()
-            self.window1.textEdit.setText(output)
-            self.window1.setWindowTitle("Intermidiate Window")   
+            self.window1.setPath(self.current_path)
+            self.window1.setCompiler(self.compiler)
+            self.window1.run()
         
+      
     def number_line(self):
         self.textEdit.textChanged.connect(self.update_line_numbers)
         self.line_number_edit = self.textBrowser

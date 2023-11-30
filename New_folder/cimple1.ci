@@ -1,32 +1,30 @@
-program awesome
-    declare x, y, z;
-    declare w;
-
-    function f1(in a)
-
-        declare z, i;
+program main
+    declare a, b;
+    function f(in a, inout b)
 
         procedure f2()
-            declare count;
-
-            function f3(inout b,in a)
-            {
-                return(a + x + z);
-            }
-        
         {
-            call f2();
+            i:=0;
+            while(i < 20)
+            {
+                if(i<10)
+                {
+                    print(i/2);
+                }
+                else
+                {
+                     print(2*i);
+                };;
+                i:= i + 1;
+            };
         }
 
     {
-        if (x<=(w+x))return(x);
-        else return(w);
+        b:=a;
+        return(b);
     }
-
     {
-
-        x := f1(in x);
-        print(x);
+        a:=1;
+        a:= f(in a, inout b);
+        call f2();
     }.
-
-       

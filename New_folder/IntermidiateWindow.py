@@ -1,26 +1,71 @@
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt,QProcess
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
 from DebuggingWindow import *
 from FinalWindow import *
+from MappingWindow import *
 
 class IntermidiateWindow(QMainWindow):
     def __init__(self):
         super(IntermidiateWindow,self).__init__()
         loadUi("IntermidiateWindow.ui",self)
+        self.path = None
+        self.compiler = None
+        self.output = ''
         self.number_line()
         self.init()
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
+        self.setWindowTitle("Intermidiate Window")
+        self.actionStart.triggered.connect(self.startDebug)
+        self.pushButton.clicked.connect(self.finalRun)
+        self.actionSource_Code_Mapping.triggered.connect(self.startMap)
 
-        self.actionStart.triggered.connect(self.start)
-        self.pushButton.clicked.connect(self.run)
+    def setPath(self,path):
+        self.path = path
 
-    def start(self):
+    def setCompiler(self,compiler):
+        self.compiler = compiler  
+
+    def run(self):
+        self.p = QProcess()
+        script_path  = "python {compiler} {current_path}".format(current_path=self.path,compiler=self.compiler)
+        self.p.startCommand(script_path)
+        if(self.p.waitForFinished() == False):
+            return
+        output = self.p.readAllStandardOutput().data().decode()
+        self.output = output
+        error = self.p.exitCode()
+        if error == 1:
+            self.err = ErrorWindow()
+            self.err.show()
+            self.err.label.setText(output)
+            self.err.setWindowTitle("Error Window")  
+        else:
+            output = self.setOutput(output)
+            self.textEdit.setText(output)
+            self.show()
+
+    def startDebug(self):
         self.window2 = DebugWindow()
         self.window2.show()
         self.window2.setWindowTitle("Debug Window")
-     
-    def run(self):
+
+    def startMap(self):
+        self.window3 = MappingWindow()
+        self.window3.setPath(self.path)
+        self.window3.setOutput(self.output)
+        self.window3.run()
+
+    def setOutput(self,output):
+        s=''
+        temp1 = output.split('\n')
+        for i in temp1:
+            temp2 = i.split(' ')
+            del temp2[-1]
+            s+=' '.join(temp2)+'\n'
+        return s
+    
+    def finalRun(self):
         self.window1 = FinalWindow()
         self.window1.show()
         self.window1.setWindowTitle("Final Window")     
