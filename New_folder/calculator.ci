@@ -3,21 +3,25 @@ program calculator
 	
 	function add(in x, in y)
 	{
+		x:= x + 5;
 		return (x + y);
 	}
+
 	function sub(in x, in y)
 	{
 		return (x - y);
 	}
+
 	function mul(in x, in y)
 	{
 		return (x * y);
 	}
+
 	function divide(in x, in y)
 	{
 		return (x / y);
 	}
-	#main program!!!#
+	
 	{
 		input(choice);
 		input(x);

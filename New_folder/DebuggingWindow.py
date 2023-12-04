@@ -12,6 +12,7 @@ class DebugWindow(QMainWindow):
         loadUi("DebugWindow.ui",self) 
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
         self.pushButton.clicked.connect(self.stop)
+        self.pushButton_2.clicked.connect(self.runAgain)
         self.giveBreakPoint()
         self.debug()
     
@@ -19,12 +20,17 @@ class DebugWindow(QMainWindow):
         new_size = event.size()
          
         self.textEdit.setGeometry(9, 31, new_size.width() - 20, new_size.height() - 100)
-        self.pushButton.move(10, new_size.height() - 60)
+        self.pushButton.move(90, new_size.height() - 60)
+        self.pushButton_2.move(10, new_size.height() - 60)
         self.label.move((self.textEdit.width() // 2),10)
 
         
     def stop(self):
         self.close()
+
+    def runAgain(self):
+        self.giveBreakPoint()
+        self.debug()
         
     def debug(self):
         script_path  = "python -u {compiler} {line}".format(compiler='final.py',line=breakpoint)

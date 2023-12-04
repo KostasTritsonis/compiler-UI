@@ -15,6 +15,7 @@ class MappingWindow(QMainWindow):
     def run(self):
         self.readSourcefile()
         self.createOutput()
+        self.textEdit.setText(self.output)
         self.show()
 
     def setOutput(self,output):
@@ -26,19 +27,26 @@ class MappingWindow(QMainWindow):
     def createOutput(self):
         s=''
         temp1 = self.output.split('\n')
+        del temp1[-1]
+        del temp1[-1]
+
+        temp2 = temp1[0].split(' ')
+        temp2[-1] = temp2[-1].replace('\r','')
+        sourceLine = self.input[int(temp2[-1])-2].strip()
+        s = sourceLine
+        
         for i in temp1:
             temp2 = i.split(' ')
             temp2[-1] = temp2[-1].replace('\r','')
-            sourceLine = self.input[int(temp2[-1])-1]
-            if sourceLine not in s:
-                s = sourceLine
-                del temp2[-1]
-                s +=' '.join(temp2)+'\n'
-            print(s)
+            sourceLine = self.input[int(temp2[-1])-1].strip()
+            del temp2[-1]
+            if sourceLine in s:
+                s +='\t\t'+' '.join(temp2)+'\n'
+            else:
+                s += sourceLine+'\n'
+                s +='\t\t'+' '.join(temp2)+'\n'
+        self.output = s
         
-            
-        
-    
     def readSourcefile(self):
         file = open(self.path,'r')
         lines = file.read()

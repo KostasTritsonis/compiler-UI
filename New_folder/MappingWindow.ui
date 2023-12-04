@@ -33,6 +33,12 @@ border:0;
       <height>621</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>

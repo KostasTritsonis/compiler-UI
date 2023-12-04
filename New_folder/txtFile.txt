@@ -1,21 +1,22 @@
 {'name': 'x', 'type': 'Par', 'parMode': 'cv'}
 {'name': 'y', 'type': 'Par', 'parMode': 'cv'}
 {'name': 'T_0', 'type': 'Temp'}
+{'name': 'T_1', 'type': 'Temp'}
 {'name': 'add', 'entity': [], 'nestingLevel': 1}
 -
 {'name': 'x', 'type': 'Par', 'parMode': 'cv'}
 {'name': 'y', 'type': 'Par', 'parMode': 'cv'}
-{'name': 'T_1', 'type': 'Temp'}
+{'name': 'T_2', 'type': 'Temp'}
 {'name': 'sub', 'entity': [], 'nestingLevel': 1}
 -
 {'name': 'x', 'type': 'Par', 'parMode': 'cv'}
 {'name': 'y', 'type': 'Par', 'parMode': 'cv'}
-{'name': 'T_2', 'type': 'Temp'}
+{'name': 'T_3', 'type': 'Temp'}
 {'name': 'mul', 'entity': [], 'nestingLevel': 1}
 -
 {'name': 'x', 'type': 'Par', 'parMode': 'cv'}
 {'name': 'y', 'type': 'Par', 'parMode': 'cv'}
-{'name': 'T_3', 'type': 'Temp'}
+{'name': 'T_4', 'type': 'Temp'}
 {'name': 'divide', 'entity': [], 'nestingLevel': 1}
 -
 {'name': 'choice', 'type': 'Var'}
@@ -25,9 +26,9 @@
 {'name': 'sub', 'type': 'function', 'argument': ['cv', 'cv']}
 {'name': 'mul', 'type': 'function', 'argument': ['cv', 'cv']}
 {'name': 'divide', 'type': 'function', 'argument': ['cv', 'cv']}
-{'name': 'T_4', 'type': 'Temp'}
 {'name': 'T_5', 'type': 'Temp'}
 {'name': 'T_6', 'type': 'Temp'}
 {'name': 'T_7', 'type': 'Temp'}
+{'name': 'T_8', 'type': 'Temp'}
 {'name': 'calculator', 'entity': [], 'nestingLevel': 0}
 -

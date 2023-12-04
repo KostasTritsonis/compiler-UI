@@ -16,6 +16,8 @@ class IntermidiateWindow(QMainWindow):
         self.init()
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
         self.setWindowTitle("Intermidiate Window")
+
+        
         self.actionStart.triggered.connect(self.startDebug)
         self.pushButton.clicked.connect(self.finalRun)
         self.actionSource_Code_Mapping.triggered.connect(self.startMap)
@@ -59,10 +61,14 @@ class IntermidiateWindow(QMainWindow):
     def setOutput(self,output):
         s=''
         temp1 = output.split('\n')
-        for i in temp1:
-            temp2 = i.split(' ')
-            del temp2[-1]
-            s+=' '.join(temp2)+'\n'
+        if len(temp1[0].split(' ')) == 5:
+            for i in temp1:
+                temp2 = i.split(' ')
+                del temp2[-1]
+                s+=' '.join(temp2)+'\n'
+            s.strip()
+        else:
+            return output
         return s
     
     def finalRun(self):

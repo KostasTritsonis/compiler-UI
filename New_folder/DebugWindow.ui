@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>801</width>
-    <height>568</height>
+    <width>1204</width>
+    <height>799</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -70,7 +70,7 @@ border:0;
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>90</x>
       <y>720</y>
       <width>75</width>
       <height>24</height>
@@ -84,13 +84,30 @@ color: rgb(0, 0, 0);</string>
      <string>Close</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>720</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>Run Again</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>801</width>
+     <width>1204</width>
      <height>22</height>
     </rect>
    </property>

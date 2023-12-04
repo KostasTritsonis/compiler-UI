@@ -126,7 +126,6 @@ color: rgb(0, 0, 0);</string>
     <property name="title">
      <string>Map</string>
     </property>
-    <addaction name="actionControl_Flow_Graph"/>
     <addaction name="actionSource_Code_Mapping"/>
    </widget>
    <addaction name="menuDebugging"/>

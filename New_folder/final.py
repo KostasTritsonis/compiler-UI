@@ -1,9 +1,9 @@
 import sys
 
-name,currentName= '',''
+name,currentName,programName= '','',''
 counter,returnedValue=0,0
 par,code,instructions,table =[],[],[],[]
-listofCode,results,globalVariables = {},{},{}
+listofCode,results, = {},{}
 
 f = open('intFile.int','r')
 f1 = open('txtFile.txt','r')
@@ -33,14 +33,15 @@ def readIntermidiate():
     f1.close()
 
 def readTable(number):
+    global programName
     tempData = eval(table[number][-1])
     name = tempData['name']
     results[name] = {}
     nestingLevel = int(tempData['nestingLevel'])
+    if nestingLevel == 0:
+        programName = name
     for i in range(len(table[number])-1):
-        data = eval(table[number][i])
-        if nestingLevel == 0 and data['type'] == 'Var':
-            globalVariables[data['name']] = 0 
+        data = eval(table[number][i]) 
         results[name][data['name']] = 0
     results[name]['nestingLevel'] = nestingLevel
 
@@ -65,46 +66,78 @@ def block():
             i+=1  
     return 
 
+
 def funCommands(i):
-    global counter,name,par,code,returnedValue,currentName
+    global name,par,code,returnedValue,currentName,programName
 
     code.append(i)
     if i[0] == 'begin_block':
-        readTable(counter)
         name = i[1]   
 
     elif i[0] == ':=':
         temp = checkString(i[1]) 
 
         if type(temp) is str:
-            results[name][i[-1]] = results[name][i[1]]
+            if (i[-1] in results[programName]) and (i[-1] not in results[name]):
+                results[programName][i[-1]] = results[name][i[1]]
+            else:
+                results[name][i[-1]] = results[name][i[1]]
         else:
-            results[name][i[-1]] = temp 
+            if (i[-1] in results[programName]) and (i[-1] not in results[name]):
+                results[programName][i[-1]] = temp
+            else:
+                results[name][i[-1]] = temp
 
     if i[0] == '+' or i[0] == '/' or i[0] == '-' or i[0] == '*':
-
         op1 = checkString(i[1])
         op2 = checkString(i[2])
 
-        if type(op1) is str:
-            op1 = results[name][i[1]]
-
-        if type(op2) is str:
-            op2 = results[name][i[2]]
-
-        if i[0] == '+':
-            results[name][i[-1]]  = op1 + op2
-            
-        elif i[0] == '/':
-            if op1 != 0 and op2 != 0:
-                results[name][i[-1]]  = op1 / op2
-            
-        elif i[0] == '-':
-            results[name][i[-1]]  = op1 - op2
-            
-        elif i[0] == '*':
-            results[name][i[-1]]  = op1 * op2
         
+        
+        if (i[-1] in results[programName]) and (i[-1] not in results[name]):
+
+            print(programName,name)
+            if type(op1) is str:
+                op1 = results[programName][i[1]]
+
+            if type(op2) is str:
+                op2 = results[programName][i[2]]
+
+            if i[0] == '+':
+               results[programName][i[-1]]  = op1 + op2
+                
+            elif i[0] == '/':
+                if op1 != 0 and op2 != 0:
+                    results[programName][i[-1]]  = op1 / op2
+                
+            elif i[0] == '-':
+                results[programName][i[-1]]  = op1 - op2
+                
+            elif i[0] == '*':
+                results[programName][i[-1]]  = op1 * op2
+        else:
+
+            if type(op1) is str:
+                op1 = results[name][i[1]]
+
+            if type(op2) is str:
+                op2 = results[name][i[2]]
+
+            if i[0] == '+':
+                results[name][i[-1]]  = op1 + op2
+                
+            elif i[0] == '/':
+                if op1 != 0 and op2 != 0:
+                    results[name][i[-1]]  = op1 / op2
+                
+            elif i[0] == '-':
+                results[name][i[-1]]  = op1 - op2
+                
+            elif i[0] == '*':
+                results[name][i[-1]]  = op1 * op2
+
+
+
     elif i[0] == 'out':
 
         temp = checkString(i[1]) 
@@ -127,10 +160,9 @@ def funCommands(i):
         del code[0]
         del code[-1]
         listofCode[name] = code
-        counter+=1
         code=[]
         
-    elif i[0] == '=' or  i[0] == '<' or  i[0] == '>':
+    elif i[0] == '=' or  i[0] == '<' or  i[0] == '>' or i[0] == '<>':
 
         temp1 = checkString(i[1])
         temp2 = checkString(i[2])
@@ -149,6 +181,9 @@ def funCommands(i):
                 return int(i[-1])-1
         elif i[0] == '>':
             if temp1 > temp2:
+                return int(i[-1])-1   
+        elif i[0] == '<>':
+            if temp1 != temp2:
                 return int(i[-1])-1
                 
     elif i[0] == 'par':
@@ -185,10 +220,10 @@ def funCommands(i):
                         results[name][variable] = results[i[1]][variable]
 
         par = []
-
-            
+    
     return -1
-               
+
+
 def checkString(string):
     if string.isdigit():
         return int(string)
@@ -217,6 +252,10 @@ def checkBreakpoint():
 if __name__ == '__main__':
     readIntermidiate()
     checkBreakpoint()
+
+    for i in range(len(table)):
+        readTable(i)
     block()
     if breakpoint != 'None':
         printTable()
+    print(results[programName])
