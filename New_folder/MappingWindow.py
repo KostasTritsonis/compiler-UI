@@ -25,27 +25,27 @@ class MappingWindow(QMainWindow):
         self.path = path
 
     def createOutput(self):
-        s=''
-        temp1 = self.output.split('\n')
-        del temp1[-1]
-        del temp1[-1]
+        text=''
+        temp = self.output.split('\n')
+        del temp[-1]
+        del temp[-1]
 
-        temp2 = temp1[0].split(' ')
-        temp2[-1] = temp2[-1].replace('\r','')
-        sourceLine = self.input[int(temp2[-1])-2].strip()
-        s = sourceLine
+        temp1 = temp[0].split(' ')
+        temp1[-1] = temp1[-1].replace('\r','')
+        sourceLine = self.input[int(temp1[-1])-2].strip()
+        text = sourceLine
         
-        for i in temp1:
-            temp2 = i.split(' ')
-            temp2[-1] = temp2[-1].replace('\r','')
-            sourceLine = self.input[int(temp2[-1])-1].strip()
-            del temp2[-1]
-            if sourceLine in s:
-                s +='\t\t'+' '.join(temp2)+'\n'
+        for i in temp:
+            temp1 = i.split(' ')
+            temp1[-1] = temp1[-1].replace('\r','')
+            sourceLine = self.input[int(temp1[-1])-1].strip()
+            del temp1[-1]
+            if sourceLine in text:
+                text +='\t\t'+' '.join(temp1)+'\n'
             else:
-                s += sourceLine+'\n'
-                s +='\t\t'+' '.join(temp2)+'\n'
-        self.output = s
+                text += sourceLine+'\n'
+                text +='\t\t'+' '.join(temp1)+'\n'
+        self.output = text
         
     def readSourcefile(self):
         file = open(self.path,'r')
@@ -53,6 +53,6 @@ class MappingWindow(QMainWindow):
         self.input = lines.split("\n")
 
     def resizeEvent(self, event):
-        new_size = event.size()
-        self.textEdit.setGeometry(13, 20, new_size.width() - 25, new_size.height() - 50)
+        newSize = event.size()
+        self.textEdit.setGeometry(13, 20, newSize.width() - 25, newSize.height() - 50)
         self.label.move((self.textEdit.width() // 2)-31,0)   

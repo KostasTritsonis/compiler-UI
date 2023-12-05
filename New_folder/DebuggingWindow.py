@@ -5,7 +5,7 @@ from BreakpointWindow import *
 from InputWindow import *
 import subprocess
 class DebugWindow(QMainWindow):
-    breakpoint = ''
+    breakPoint = ''
     inputValue = ''
     def __init__(self):
         super(DebugWindow,self).__init__()
@@ -17,11 +17,11 @@ class DebugWindow(QMainWindow):
         self.debug()
     
     def resizeEvent(self, event):
-        new_size = event.size()
+        newSize = event.size()
          
-        self.textEdit.setGeometry(9, 31, new_size.width() - 20, new_size.height() - 100)
-        self.pushButton.move(90, new_size.height() - 60)
-        self.pushButton_2.move(10, new_size.height() - 60)
+        self.textEdit.setGeometry(9, 31, newSize.width() - 20, newSize.height() - 100)
+        self.pushButton.move(90, newSize.height() - 60)
+        self.pushButton_2.move(10, newSize.height() - 60)
         self.label.move((self.textEdit.width() // 2),10)
 
         
@@ -33,29 +33,29 @@ class DebugWindow(QMainWindow):
         self.debug()
         
     def debug(self):
-        script_path  = "python -u {compiler} {line}".format(compiler='final.py',line=breakpoint)
-        self.p = subprocess.Popen(script_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
-        text = ''
-        while self.p.poll() is None:
-            line = self.p.stdout.readline().strip()
+        scriptPath  = "python -u {compiler} {line}".format(compiler='Final.py',line=breakPoint)
+        self.process = subprocess.Popen(scriptPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+        finalText = ''
+        while self.process.poll() is None:
+            line = self.process.stdout.readline().strip()
             if line:
                 if 'Give input' in line:
                     self.giveInput(line)
-                    self.p.stdin.write(inputValue + "\n")
-                    self.p.stdin.flush()
+                    self.process.stdin.write(inputValue + "\n")
+                    self.process.stdin.flush()
                 if line == '-':
-                    while self.p.poll() is None:
-                        line = self.p.stdout.readline().strip()
-                        text+=line+'\n'
-        self.textEdit.setText(text.strip())
-        self.p.stdin.close()
+                    while self.process.poll() is None:
+                        line = self.process.stdout.readline().strip()
+                        finalText+=line+'\n'
+        self.textEdit.setText(finalText.strip())
+        self.process.stdin.close()
         
     def setBreakpoint(self,data):
-        global breakpoint
+        global breakPoint
         if data == '':
             self.giveBreakPoint()
         else:
-            breakpoint = data
+            breakPoint = data
             
     def setInputValue(self,data):
         global inputValue

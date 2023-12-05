@@ -12,7 +12,7 @@ class IntermidiateWindow(QMainWindow):
         self.path = None
         self.compiler = None
         self.output = ''
-        self.number_line()
+        self.numberLine()
         self.init()
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
         self.setWindowTitle("Intermidiate Window")
@@ -29,77 +29,77 @@ class IntermidiateWindow(QMainWindow):
         self.compiler = compiler  
 
     def run(self):
-        self.p = QProcess()
-        script_path  = "python {compiler} {current_path}".format(current_path=self.path,compiler=self.compiler)
-        self.p.startCommand(script_path)
-        if(self.p.waitForFinished() == False):
+        self.process = QProcess()
+        scriptPath  = "python {compiler} {currentPath}".format(currentPath=self.path,compiler=self.compiler)
+        self.process.startCommand(scriptPath)
+        if(self.process.waitForFinished() == False):
             return
-        output = self.p.readAllStandardOutput().data().decode()
+        output = self.process.readAllStandardOutput().data().decode()
         self.output = output
-        error = self.p.exitCode()
+        error = self.process.exitCode()
         if error == 1:
-            self.err = ErrorWindow()
-            self.err.show()
-            self.err.label.setText(output)
-            self.err.setWindowTitle("Error Window")  
+            self.ErrWindow = ErrorWindow()
+            self.ErrWindow.show()
+            self.ErrWindow.label.setText(output)
+            self.ErrWindow.setWindowTitle("Error Window")  
         else:
             output = self.setOutput(output)
             self.textEdit.setText(output)
             self.show()
 
     def startDebug(self):
-        self.window2 = DebugWindow()
-        self.window2.show()
-        self.window2.setWindowTitle("Debug Window")
+        self.DebWindow = DebugWindow()
+        self.DebWindow.show()
+        self.DebWindow.setWindowTitle("Debug Window")
 
     def startMap(self):
-        self.window3 = MappingWindow()
-        self.window3.setPath(self.path)
-        self.window3.setOutput(self.output)
-        self.window3.run()
+        self.MapWindow = MappingWindow()
+        self.MapWindow.setPath(self.path)
+        self.MapWindow.setOutput(self.output)
+        self.MapWindow.run()
 
     def setOutput(self,output):
-        s=''
-        temp1 = output.split('\n')
-        if len(temp1[0].split(' ')) == 5:
-            for i in temp1:
-                temp2 = i.split(' ')
-                del temp2[-1]
-                s+=' '.join(temp2)+'\n'
-            s.strip()
+        text=''
+        temp = output.split('\n')
+        if len(temp[0].split(' ')) == 5:
+            for i in temp:
+                temp1 = i.split(' ')
+                del temp1[-1]
+                text+=' '.join(temp1)+'\n'
+            text.strip()
         else:
             return output
-        return s
+        return text
     
     def finalRun(self):
-        self.window1 = FinalWindow()
-        self.window1.show()
-        self.window1.setWindowTitle("Final Window")     
+        self.FinalWindow = FinalWindow()
+        self.FinalWindow.show()
+        self.FinalWindow.setWindowTitle("Final Window")     
 
-    def number_line(self):
-        self.textEdit.textChanged.connect(self.update_line_numbers)
-        self.line_number_edit = self.textBrowser
-        self.line_number_edit.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+    def numberLine(self):
+        self.textEdit.textChanged.connect(self.updateLineNumbers)
+        self.lineNumberEdit = self.textBrowser
+        self.lineNumberEdit.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
-    def update_line_numbers(self):
+    def updateLineNumbers(self):
         text = self.textEdit.toPlainText()
-        line_count = text.count('\n') + 1
-        line_numbers_text = '\n'.join(map(str, range(1, line_count + 1)))
-        self.line_number_edit.setPlainText(line_numbers_text)
+        lineCount = text.count('\n') + 1
+        lineNumbersText = '\n'.join(map(str, range(1, lineCount + 1)))
+        self.lineNumberEdit.setPlainText(lineNumbersText)
 
     def init(self):
-        self.textEdit.verticalScrollBar().valueChanged.connect(self.sync_scroll_bars)
-        self.textBrowser.verticalScrollBar().valueChanged.connect(self.sync_scroll_bars)
+        self.textEdit.verticalScrollBar().valueChanged.connect(self.syncScrollBars)
+        self.textBrowser.verticalScrollBar().valueChanged.connect(self.syncScrollBars)
 
-    def sync_scroll_bars(self):
-        scroll_value = self.sender().value()
-        self.textEdit.verticalScrollBar().setValue(scroll_value)
-        self.textBrowser.verticalScrollBar().setValue(scroll_value)
+    def syncScrollBars(self):
+        scrollValue = self.sender().value()
+        self.textEdit.verticalScrollBar().setValue(scrollValue)
+        self.textBrowser.verticalScrollBar().setValue(scrollValue)
     
     def resizeEvent(self, event):
-        new_size = event.size()
+        newSize = event.size()
         
-        self.textEdit.setGeometry(40, 31, new_size.width() - 60, new_size.height() - 120)
-        self.textBrowser.setGeometry(10, 31, 31, new_size.height() - 120)
-        self.pushButton.move(10, new_size.height() - 80)
+        self.textEdit.setGeometry(40, 31, newSize.width() - 60, newSize.height() - 120)
+        self.textBrowser.setGeometry(10, 31, 31, newSize.height() - 120)
+        self.pushButton.move(10, newSize.height() - 80)
         self.label.move((self.textEdit.width() // 2)-31,0)

@@ -20,8 +20,8 @@ class InputWindow(QDialog):
         super().accept()
         
     def resizeEvent(self, event):
-        new_size = event.size()
-        self.pushButton.move(new_size.width()-230, new_size.height()-50)
-        self.label.move(new_size.width()-380,new_size.height()- 100)
-        self.lineEdit.move(new_size.width()-250,new_size.height()-100)
+        newSize = event.size()
+        self.pushButton.move(newSize.width()-230, newSize.height()-50)
+        self.label.move(newSize.width()-380,newSize.height()- 100)
+        self.lineEdit.move(newSize.width()-250,newSize.height()-100)
     

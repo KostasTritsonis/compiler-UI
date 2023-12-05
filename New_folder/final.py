@@ -1,36 +1,36 @@
 import sys
 
 name,currentName,programName= '','',''
-counter,returnedValue=0,0
+returnedValue=0
 par,code,instructions,table =[],[],[],[]
 listofCode,results, = {},{}
 
-f = open('intFile.int','r')
-f1 = open('txtFile.txt','r')
-breakpoint = sys.argv[1]
+file = open('intFile.int','r')
+file1 = open('txtFile.txt','r')
+breakPoint = sys.argv[1]
 
 def readIntermidiate():
-    lread = f.readline()
-    while lread!='':
-        lread1 = lread.split(' ')
-        lread1.remove('\n')
-        lread1 = list(filter(('_').__ne__, lread1))
-        instructions.append(lread1)
-        lread = f.readline()
+    line = file.readline()
+    while line!='':
+        tempLine = line.split(' ')
+        tempLine.remove('\n')
+        tempLine = list(filter(('_').__ne__, tempLine))
+        instructions.append(tempLine)
+        line = file.readline()
 
-    file_contents = f1.read() 
-    lines = file_contents.strip().split('-')
+    fileContents = file1.read() 
+    lines = fileContents.strip().split('-')
     del lines[-1]
     for i in range(len(lines)):
-        tmp = lines[i].split("\n")
-        if tmp[0] == '':
-            del tmp[0]
-        if tmp[-1] == '':
-            del tmp[-1]
-        table.append(tmp)
+        temp = lines[i].split("\n")
+        if temp[0] == '':
+            del temp[0]
+        if temp[-1] == '':
+            del temp[-1]
+        table.append(temp)
     
-    f.close()
-    f1.close()
+    file.close()
+    file1.close()
 
 def readTable(number):
     global programName
@@ -240,11 +240,11 @@ def printTable():
         print(key, ":", value)
         
 def checkBreakpoint():
-    global lines,breakpoint
+    global lines,breakPoint
     
-    if breakpoint != 'None':
-        breakpoint = int(breakpoint)
-        lines = breakpoint+1
+    if breakPoint != 'None':
+        breakPoint = int(breakPoint)
+        lines = breakPoint+1
     else:
         lines = None        
 
@@ -256,6 +256,6 @@ if __name__ == '__main__':
     for i in range(len(table)):
         readTable(i)
     block()
-    if breakpoint != 'None':
+    if breakPoint != 'None':
         printTable()
-    print(results[programName])
+    print(results)

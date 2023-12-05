@@ -15,26 +15,26 @@ class FinalWindow(QMainWindow):
         
         
     def resizeEvent(self, event):
-        new_size = event.size()
+        newSize = event.size()
          
-        self.textEdit.setGeometry(9, 39, new_size.width() - 20, new_size.height() - 100)
+        self.textEdit.setGeometry(9, 39, newSize.width() - 20, newSize.height() - 100)
         self.label.move((self.textEdit.width() // 2),10)
         
     def readfile(self):
-        script_path  = "python -u {compiler} None".format(compiler='final.py',line=breakpoint)
-        self.p = subprocess.Popen(script_path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
-        text = ''
-        while self.p.poll() is None:
-            line = self.p.stdout.readline().strip()
+        scriptPath  = "python -u {compiler} None".format(compiler='Final.py',line=breakpoint)
+        self.process = subprocess.Popen(scriptPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+        finalTtext = ''
+        while self.process.poll() is None:
+            line = self.process.stdout.readline().strip()
             if line:
                 if 'Give input' in line:
                     self.giveInput(line)
-                    self.p.stdin.write(inputValue + "\n")
-                    self.p.stdin.flush()
+                    self.process.stdin.write(inputValue + "\n")
+                    self.process.stdin.flush()
                 else:
-                    text+=line+'\n'
-            self.textEdit.setText(text)
-        self.p.stdin.close()
+                    finalTtext+=line+'\n'
+            self.textEdit.setText(finalTtext)
+        self.process.stdin.close()
         
     def giveInput(self,line):
         dialog = InputWindow()
