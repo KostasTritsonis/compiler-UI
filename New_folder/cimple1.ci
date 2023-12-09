@@ -3,6 +3,14 @@ program main
     function f(in a, inout b)
 
         procedure f2()
+        declare a;
+
+            procedure f3()
+            {
+                a:=5
+            }
+
+
         {
             i:=0;
             while(i < 20)
@@ -26,5 +34,6 @@ program main
     {
         a:=1;
         a:= f(in a, inout b);
+        call f3();
         call f2();
     }.
