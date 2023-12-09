@@ -46,7 +46,6 @@ def readTable(number):
             results[name][data['name']] = 0
         if data['type'] == 'function' or data['type'] == 'procedure':
             results[name][data['name']] = results[data['name']]
-    results[name]['nestingLevel'] = nestingLevel
 
   
 def block():
