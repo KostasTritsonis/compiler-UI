@@ -1,0 +1,22 @@
+program main
+    declare a, b, c;
+    function f(in a, inout b)
+        declare c;
+        procedure f2()
+        {
+            c:=5;
+            
+        }
+
+    {
+        b:=3;
+        call f2();
+        return(b);
+    }
+
+    {
+        a:=1;
+        c:=2;
+        a:= f(in a, inout b);
+        
+    }.

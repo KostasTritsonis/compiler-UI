@@ -1,0 +1,15 @@
+{'name': 'f2', 'entity': [], 'nestingLevel': 2}
+-
+{'name': 'a', 'type': 'Par', 'parMode': 'cv'}
+{'name': 'b', 'type': 'Par', 'parMode': 'ref'}
+{'name': 'c', 'type': 'Var'}
+{'name': 'f2', 'type': 'procedure', 'argument': []}
+{'name': 'f', 'entity': [], 'nestingLevel': 1}
+-
+{'name': 'a', 'type': 'Var'}
+{'name': 'b', 'type': 'Var'}
+{'name': 'c', 'type': 'Var'}
+{'name': 'f', 'type': 'function', 'argument': ['cv', 'ref']}
+{'name': 'T_0', 'type': 'Temp'}
+{'name': 'main', 'entity': [], 'nestingLevel': 0}
+-
