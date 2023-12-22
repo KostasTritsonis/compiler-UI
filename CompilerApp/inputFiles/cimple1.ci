@@ -1,5 +1,5 @@
 program main
-    declare a, b, c;
+    declare a, b, c, d;
     function f(in a, inout b)
         declare c;
         procedure f2()
@@ -13,10 +13,26 @@ program main
         call f2();
         return(b);
     }
+ function f3(in a, inout b)
+        declare c;
+        procedure f4()
+        {
+            c:=1;
+            
+        }
+
+    {
+        b:=10;
+        call f4();
+    
+    }
+	
+
 
     {
         a:=1;
         c:=2;
         a:= f(in a, inout b);
+        d:=f3(in a, inout b);
         
     }.

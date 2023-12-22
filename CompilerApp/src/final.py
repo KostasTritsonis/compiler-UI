@@ -1,7 +1,7 @@
 import sys,os
 
 name,programName,currentName= '','',''
-flag=0
+flag,flag1=0,0
 returnedValue = ()
 par,instructions,table=[],[],[]
 results = {}
@@ -84,7 +84,7 @@ def block():
     return 
 
 def funCommands(i):
-    global name,par,returnedValue,programName,currentName
+    global name,par,returnedValue,programName,currentName,flag1
 
     if i[0] == 'begin_block':
         name = i[1]
@@ -93,7 +93,8 @@ def funCommands(i):
         temp = checkString(i[1])
         
         for dict in results:
-            if  i[-1] in results[dict] and  results[name]['nl'] >= results[dict]['nl']:
+            if name == dict: flag1=1
+            if  flag1==1 and i[-1] in results[dict]:
                 if type(temp) is str:
                     for dict1 in results:
                         if i[1] in results[dict1] and  results[name]['nl'] >= results[dict1]['nl']:
@@ -102,6 +103,7 @@ def funCommands(i):
                 else:
                     results[dict][i[-1]] = temp
                     break
+        flag1=0
                         
     if i[0] == '+' or i[0] == '/' or i[0] == '-' or i[0] == '*':
         op1 = checkString(i[1])
@@ -109,16 +111,19 @@ def funCommands(i):
 
         if type(op1) is str:
             for dict in results:
-                if  i[1] in results[dict] and  results[name]['nl'] >= results[dict]['nl']:
+                if name == dict: flag1=1
+                if  flag1==1 and i[1] in results[dict]:
                     op1 = results[dict][i[1]]
                     break
+            flag1=0
 
         if type(op2) is str:
             for dict in results:
-                if  i[2] in results[dict] and  results[name]['nl'] >= results[dict]['nl']:
+                if name == dict: flag1=1
+                if  flag1==1 and i[2] in results[dict]:
                     op2 = results[dict][i[2]]
                     break
-                
+            flag1=0
         if i[0] == '+':
             results[name][i[-1]]  = op1 + op2
             
@@ -143,9 +148,11 @@ def funCommands(i):
 
         if type(temp) is str:
             for dict in results:
-                if  i[1] in results[dict] and  results[name]['nl'] >= results[dict]['nl']:
+                if name == dict: flag1=1
+                if  flag1==1 and i[1] in results[dict]:
                     temp = results[dict][i[1]]
                     break
+            flag1=0
                 
         print('The value of {a} is {b}'.format(a=i[1],b=temp))
         
@@ -163,9 +170,11 @@ def funCommands(i):
     elif i[0] == 'retv':
         if returnedValue != ():
             for dict in results:
-                if  i[1] in results[dict] and  results[name]['nl'] >= results[dict]['nl']:
+                if name == dict: flag1=1
+                if  flag1==1 and i[1] in results[dict]:
                     results[returnedValue[0]][returnedValue[1]] = results[dict][i[1]]
                     break
+            flag1=0
         
     elif i[0] == '=' or  i[0] == '<' or  i[0] == '>' or i[0] == '<>' or i[0] == '<=' or i[0] == '>=':
 
@@ -174,16 +183,20 @@ def funCommands(i):
 
         if type(op1) is str:
             for dict in results:
-                if  i[1] in results[dict] and  results[name]['nl'] >= results[dict]['nl']:
+                if name == dict: flag1=1
+                if flag1==1 and i[1] in results[dict]:
                     op1 = results[dict][i[1]]
                     break
+            flag1=0
             
 
         if type(op2) is str:
             for dict in results:
-                if  i[2] in results[dict] and  results[name]['nl'] >= results[dict]['nl']:
+                if name == dict: flag1=1
+                if  flag1==1 and i[2] in results[dict]:
                     op2 = results[dict][i[2]]
                     break
+            flag1=0
        
         if i[0] == '=':
             if op1 == op2:

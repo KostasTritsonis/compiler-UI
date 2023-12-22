@@ -12,6 +12,7 @@ class IntermidiateWindow(QMainWindow):
         self.path = None
         self.compiler = None
         self.output = ''
+        self.totalLines = ''
         self.numberLine()
         self.init()
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
@@ -49,6 +50,7 @@ class IntermidiateWindow(QMainWindow):
 
     def startDebug(self):
         self.DebWindow = DebugWindow()
+        self.DebWindow.setTotalLines(self.totalLines)
         self.DebWindow.show()
         self.DebWindow.setWindowTitle("Debug Window")
 
@@ -85,6 +87,7 @@ class IntermidiateWindow(QMainWindow):
         text = self.textEdit.toPlainText()
         lineCount = text.count('\n') + 1
         lineNumbersText = '\n'.join(map(str, range(1, lineCount + 1)))
+        self.totalLines = lineCount
         self.lineNumberEdit.setPlainText(lineNumbersText)
 
     def init(self):

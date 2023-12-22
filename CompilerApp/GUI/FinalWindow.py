@@ -9,9 +9,9 @@ import os,subprocess
 
 
 class FinalWindow(QMainWindow):
-    path = os.path.join('..', 'src', 'final.py')
-    inputValue = ''
     def __init__(self):
+        self.path = os.path.join('..', 'src', 'final.py')
+        self.inputValue = ''
         super(FinalWindow,self).__init__()
         loadUi("FinalWindow.ui",self)
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
@@ -25,7 +25,7 @@ class FinalWindow(QMainWindow):
         self.label.move((self.textEdit.width() // 2),10)
         
     def readfile(self):
-        scriptPath  = "python -u {compiler} None".format(compiler=path)
+        scriptPath  = "python -u {compiler} None".format(compiler=self.path)
         self.process = subprocess.Popen(scriptPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
         finalTtext = ''
         while self.process.poll() is None:
@@ -33,7 +33,7 @@ class FinalWindow(QMainWindow):
             if line:
                 if 'Give input' in line:
                     self.giveInput(line)
-                    self.process.stdin.write(inputValue + "\n")
+                    self.process.stdin.write(self.inputValue + "\n")
                     self.process.stdin.flush()
                 else:
                     finalTtext+=line+'\n'
@@ -47,6 +47,5 @@ class FinalWindow(QMainWindow):
         dialog.exec()  
         
     def setInputValue(self,data):
-        global inputValue
-        inputValue = data
+        self.inputValue = data
 

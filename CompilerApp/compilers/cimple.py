@@ -401,12 +401,12 @@ def newtemp():
 
 
 def search(name, type):
-    global topScope
+    
 
-    scope=topScope
-    for entity in scope.entity:
-        if entity.name == name and entity.type in type:
-            return (entity, scope.nestingLevel)
+    for scope in listofscopes:
+        for entity in scope.entity:
+            if entity.name == name and entity.type in type:
+                return (entity, scope.nestingLevel)
     return 'err'
 
 
@@ -1475,7 +1475,7 @@ def intFile(file):
     text = ""
     for i in range(len(listofquads)):
         q = listofquads[i]
-        text += str(q[1])+" "+str(q[2])+" "+str(q[3])+" "+str(q[4])+" "+str(q[5])+"\n"
+        text += str(q[1])+" "+str(q[2])+" "+str(q[3])+" "+str(q[4])+"\n"
     print(text)
     
     for i in range(len(listofquads)):

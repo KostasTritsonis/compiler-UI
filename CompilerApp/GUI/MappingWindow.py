@@ -4,13 +4,14 @@ from PyQt6.uic import loadUi
 
 class MappingWindow(QMainWindow):
     def __init__(self):
+        self.path = None
+        self.output = ''
+        self.input = ''
         super(MappingWindow,self).__init__()
         loadUi("MappingWindow.ui",self) 
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
         self.setWindowTitle("Mapping Window")
-        self.path = None
-        self.output = ''
-        self.input = ''
+        
 
     def run(self):
         self.readSourcefile()
@@ -29,23 +30,25 @@ class MappingWindow(QMainWindow):
         temp = self.output.split('\n')
         del temp[-1]
         del temp[-1]
-
-        temp1 = temp[0].split(' ')
-        temp1[-1] = temp1[-1].replace('\r','')
-        sourceLine = self.input[int(temp1[-1])-2].strip()
-        text = sourceLine
-        
-        for i in temp:
-            temp1 = i.split(' ')
+        if len(temp[0].split(' ')) == 5:
+            temp1 = temp[0].split(' ')
             temp1[-1] = temp1[-1].replace('\r','')
-            sourceLine = self.input[int(temp1[-1])-1].strip()
-            del temp1[-1]
-            if sourceLine in text:
-                text +='\t\t'+' '.join(temp1)+'\n'
-            else:
-                text += sourceLine+'\n'
-                text +='\t\t'+' '.join(temp1)+'\n'
-        self.output = text
+            sourceLine = self.input[int(temp1[-1])-2].strip()
+            text = sourceLine
+            
+            for i in temp:
+                temp1 = i.split(' ')
+                temp1[-1] = temp1[-1].replace('\r','')
+                sourceLine = self.input[int(temp1[-1])-1].strip()
+                del temp1[-1]
+                if sourceLine in text:
+                    text +='\t\t'+' '.join(temp1)+'\n'
+                else:
+                    text += sourceLine+'\n'
+                    text +='\t\t'+' '.join(temp1)+'\n'
+            self.output = text
+        else:
+            self.output = "Please add the line number in the compiler's file"
         
     def readSourcefile(self):
         file = open(self.path,'r')
