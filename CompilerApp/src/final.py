@@ -95,14 +95,37 @@ def funCommands(i):
         for dict in results:
             if name == dict: flag1=1
             if  flag1==1 and i[-1] in results[dict]:
+                flag1=0
                 if type(temp) is str:
                     for dict1 in results:
-                        if i[1] in results[dict1] and  results[name]['nl'] >= results[dict1]['nl']:
+                        if name == dict1: flag1=1
+                        if flag1==1 and i[1] in results[dict1]:
                             results[dict][i[-1]] = results[dict1][i[1]] 
+                            break
+                        elif flag1==1 and results[dict1]['nl'] == 1:
+                            results[dict][i[-1]] = results[programName][i[1]] 
                             break
                 else:
                     results[dict][i[-1]] = temp
                     break
+                
+            elif flag1==1 and i[1] not in results[dict] and results[dict]['nl'] == 1:
+                flag1=0
+                if type(temp) is str:
+                    for dict1 in results:
+                        if name == dict1: flag1=1
+                        if flag1==1 and i[1] in results[dict1]:
+                            results[programName][i[-1]] = results[dict1][i[1]] 
+                            break
+                        elif flag1==1 and results[dict1]['nl'] == 1:
+                            results[programName][i[-1]] = results[programName][i[1]] 
+                            break
+                else:
+                    results[programName][i[-1]] = temp
+                    break
+                
+                
+            
         flag1=0
                         
     if i[0] == '+' or i[0] == '/' or i[0] == '-' or i[0] == '*':
@@ -115,7 +138,11 @@ def funCommands(i):
                 if  flag1==1 and i[1] in results[dict]:
                     op1 = results[dict][i[1]]
                     break
-            flag1=0
+                elif flag1==1 and i[1] not in results[dict] and results[dict]['nl'] == 1:
+                    op1 = results[programName][i[1]]
+                    break
+                
+        flag1=0
 
         if type(op2) is str:
             for dict in results:
@@ -123,7 +150,12 @@ def funCommands(i):
                 if  flag1==1 and i[2] in results[dict]:
                     op2 = results[dict][i[2]]
                     break
-            flag1=0
+                elif flag1==1 and i[2] not in results[dict] and results[dict]['nl'] == 1:
+                    op2 = results[dict][i[2]]
+                    break
+              
+        flag1=0
+        
         if i[0] == '+':
             results[name][i[-1]]  = op1 + op2
             
@@ -139,7 +171,8 @@ def funCommands(i):
             
         elif i[0] == '*':
             results[name][i[-1]]  = op1 * op2
-                    
+        
+
                 
 
     elif i[0] == 'out':
@@ -152,6 +185,9 @@ def funCommands(i):
                 if  flag1==1 and i[1] in results[dict]:
                     temp = results[dict][i[1]]
                     break
+                elif flag1==1 and i[1] not in results[dict] and results[dict]['nl'] == 1:
+                    temp =  results[programName][i[1]]
+                    break
             flag1=0
                 
         print('The value of {a} is {b}'.format(a=i[1],b=temp))
@@ -159,12 +195,16 @@ def funCommands(i):
     elif i[0] == 'inp':
         print("Give input for {value}:".format(value=i[1]))
         temp1 =  sys.stdin.readline().strip()
+        temp1 = checkString(temp1)
         for dict in results:
-            if results[name]['nl'] == 0:
-                results[name][i[1]]  = checkString(temp1)
-            elif  i[1] in results[dict] and  results[name]['nl'] >= results[dict]['nl']:
-                results[dict][i[1]]  = checkString(temp1)
-                break
+                if name == dict: flag1=1
+                if  flag1==1 and i[1] in results[dict]:
+                    results[dict][i[1]] = temp1
+                    break
+                elif flag1==1 and i[1] not in results[dict] and results[dict]['nl'] == 1:
+                    results[programName][i[1]] = temp1
+                    break
+        flag1=0
         
         
     elif i[0] == 'retv':
@@ -173,6 +213,9 @@ def funCommands(i):
                 if name == dict: flag1=1
                 if  flag1==1 and i[1] in results[dict]:
                     results[returnedValue[0]][returnedValue[1]] = results[dict][i[1]]
+                    break
+                elif flag1==1 and i[1] not in results[dict] and results[dict]['nl'] == 1:
+                    results[returnedValue[0]][returnedValue[1]] = results[programName][i[1]]
                     break
             flag1=0
         
@@ -187,6 +230,9 @@ def funCommands(i):
                 if flag1==1 and i[1] in results[dict]:
                     op1 = results[dict][i[1]]
                     break
+                elif flag1==1 and i[1] not in results[dict] and results[dict]['nl'] == 1:
+                    op1 =  results[programName][i[1]]
+                    break
             flag1=0
             
 
@@ -195,6 +241,9 @@ def funCommands(i):
                 if name == dict: flag1=1
                 if  flag1==1 and i[2] in results[dict]:
                     op2 = results[dict][i[2]]
+                    break
+                elif flag1==1 and i[2] not in results[dict] and results[dict]['nl'] == 1:
+                    op2 =  results[programName][i[2]]
                     break
             flag1=0
        
@@ -227,7 +276,7 @@ def funCommands(i):
         return int(i[-1])-1   
     
     elif i[0] == 'call':
-
+        
         for parameter in par:   
             results[i[1]][parameter[0]] = results[name][parameter[0]]
 
@@ -264,8 +313,9 @@ def checkString(string):
             
 def printTable():
     print('-')
+    print('Line in Intermidiate Code:',breakPoint,'\n')
     for key,value in results.items():
-        print(key, ":", value)
+        print(key,value)
         
 def checkBreakpoint():
     global lines,breakPoint
@@ -286,4 +336,4 @@ if __name__ == '__main__':
     if breakPoint != 'None':
         printTable()
 
-    print(results)
+    
