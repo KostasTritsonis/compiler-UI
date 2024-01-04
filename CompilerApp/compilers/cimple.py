@@ -337,35 +337,42 @@ class Variable:
     def __init__(self):
         self.name = ''
         self.type=''
-        
+        self.offset = 0
 
 class SubProgram():
     def __init__(self):
         self.name =''
         self.type = ''
         self.argument = []
-        
+        self.sQuad = 0
+        self.framelength = 0
 
 class TempVar():
     def __init__(self):
         self.name=''
         self.type = 'Temp'  
-       
+        self.offset = 0
 
 class Parameter():
     def __init__(self):
         self.name=''
         self.type = 'Par'
         self.parMode = '' 
-       
+        self.offset = 0
 
 class Scope():
     def __init__(self):
         self.name = ''
         self.entity = []
         self.nestingLevel = 0
+        self.totalOffset = 12
 
-        
+ 
+def final_framelength():
+    for e in topScope.entity:
+        for a in listofscopes:
+            if a.name == e.name:
+                e.framelength = a.totalOffset        
 
 def new_argument(obj):
     global topScope
@@ -393,7 +400,8 @@ def newtemp():
     e = TempVar()                             
     e.type = 'Temp'                           
     e.name = l
-                           
+    e.offset = topScope.totalOffset 
+    topScope.totalOffset += 4                        
     new_entity(e)   
 
     return l
@@ -454,12 +462,15 @@ def add_parameters():
         e.name = a[1]
         e.type = 'Par'
         e.parMode = a[0]
+        e.offset = topScope.totalOffset
+        topScope.totalOffset += 4
         new_entity(e)
     parameters.clear()   
 
 def write_Symbol_table():
     global topScope,cp
     scope=topScope
+    final_framelength()
     for e in scope.entity:
         cp.write(str(vars(e))+"\n")
     scope.entity = []
@@ -546,6 +557,8 @@ def syn():
             e = Variable()                          
             e.type = 'Var'                       
             e.name = lex1[1] 
+            e.offset = topScope.totalOffset
+            topScope.totalOffset += 4
             new_entity(e) 
             
             lex1 = lex()
@@ -560,6 +573,8 @@ def syn():
                     e = Variable()                          
                     e.type = 'Var'                       
                     e.name = lex1[1] 
+                    e.offset = topScope.totalOffset
+                    topScope.totalOffset += 4
                     new_entity(e)   
 
                     lex1 = lex()

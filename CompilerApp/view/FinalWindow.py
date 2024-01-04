@@ -10,7 +10,7 @@ import os,subprocess
 
 class FinalWindow(QMainWindow):
     def __init__(self):
-        self.path = os.path.join('..', 'src', 'final.py')
+        self.path = os.path.join('..', 'model', 'final.py')
         self.inputValue = ''
         super(FinalWindow,self).__init__()
         loadUi("FinalWindow.ui",self)

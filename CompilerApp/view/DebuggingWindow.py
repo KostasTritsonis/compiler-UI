@@ -8,7 +8,7 @@ import os,subprocess
 
 class DebugWindow(QMainWindow):
     def __init__(self):
-        self.path = os.path.join('..', 'src', 'final.py')
+        self.path = os.path.join('..', 'view', 'final.py')
         self.breakPoint = ''
         self.inputValue = ''
         self.totalLines = ''
