@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,re
 
 name,programName,currentName= '','',''
 flag,flag1=0,0
@@ -24,7 +24,7 @@ breakPoint = sys.argv[1]
 def readIntermidiate():
     line = file.readline()
     while line!='':
-        tempLine = line.split(' ')
+        tempLine = re.split(',| ',line)
         tempLine.remove('\n')
         tempLine = list(filter(('_').__ne__, tempLine))
         instructions.append(tempLine)
@@ -81,7 +81,7 @@ def block():
         else:
             i+=1
         
-    return 
+    return i
 
 def funCommands(i):
     global name,par,returnedValue,programName,currentName,flag1
@@ -311,9 +311,9 @@ def checkString(string):
         except ValueError:
             return string
             
-def printTable():
+def printTable(line):
     print('-')
-    print('Line in Intermidiate Code:',breakPoint,'\n')
+    print('Line in Intermidiate Code:',line,'\n')
     for key,value in results.items():
         print(key,value)
         
@@ -332,8 +332,10 @@ if __name__ == '__main__':
     checkBreakpoint()
     for i in range(len(table)):
         readTable(i)
-    block()
+    line = block()
+    for dict in results:
+        del results[dict]['nl']
     if breakPoint != 'None':
-        printTable()
+        printTable(line)
 
     
