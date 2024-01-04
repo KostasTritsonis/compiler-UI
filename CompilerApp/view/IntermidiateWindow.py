@@ -101,7 +101,6 @@ class IntermidiateWindow(QMainWindow):
     
     def resizeEvent(self, event):
         newSize = event.size()
-        
         self.textEdit.setGeometry(40, 31, newSize.width() - 60, newSize.height() - 120)
         self.textBrowser.setGeometry(10, 31, 31, newSize.height() - 120)
         self.pushButton.move(10, newSize.height() - 80)

@@ -21,17 +21,6 @@ class DebugWindow(QMainWindow):
         self.pushButton_4.clicked.connect(self.runNext)
         self.giveBreakPoint()
         self.debug()
-    
-    def resizeEvent(self, event):
-        newSize = event.size()
-         
-        self.textEdit.setGeometry(9, 31, newSize.width() - 20, newSize.height() - 100)
-        self.pushButton.move(90, newSize.height() - 60)
-        self.pushButton_2.move(10, newSize.height() - 60)
-        self.pushButton_3.move(newSize.width()-170, newSize.height() - 60)
-        self.pushButton_4.move(newSize.width()-90, newSize.height() - 60)
-        self.label.move((self.textEdit.width() // 2),10)
-
         
     def stop(self):
         self.close()
@@ -96,4 +85,13 @@ class DebugWindow(QMainWindow):
         dialog = BreakpointWindow()
         dialog.dataPassed.connect(self.setBreakpoint)
         dialog.exec()
+    
+    def resizeEvent(self, event):
+        newSize = event.size()
+        self.textEdit.setGeometry(9, 31, newSize.width() - 20, newSize.height() - 100)
+        self.pushButton.move(90, newSize.height() - 60)
+        self.pushButton_2.move(10, newSize.height() - 60)
+        self.pushButton_3.move(newSize.width()-170, newSize.height() - 60)
+        self.pushButton_4.move(newSize.width()-90, newSize.height() - 60)
+        self.label.move((self.textEdit.width() // 2),10)
               
