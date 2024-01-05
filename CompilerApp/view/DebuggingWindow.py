@@ -6,13 +6,12 @@ from InputWindow import *
 import os,subprocess
 
 
-class DebugWindow(QMainWindow):
+class DebuggingWindow(QMainWindow):
     def __init__(self):
-        self.path = os.path.join('..', 'src', 'final.py')
+        self.path = os.path.join('..', 'view', 'final.py')
         self.breakPoint = ''
         self.inputValue = ''
-        self.totalLines = ''
-        super(DebugWindow,self).__init__()
+        super(DebuggingWindow,self).__init__()
         loadUi("DebugWindow.ui",self) 
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
         self.pushButton.clicked.connect(self.stop)
@@ -71,8 +70,6 @@ class DebugWindow(QMainWindow):
     def setInputValue(self,data):
         self.inputValue = data
 
-    def setTotalLines(self,lines):
-        self.totalLines = lines
         
     def giveInput(self,line):
         dialog = InputWindow()

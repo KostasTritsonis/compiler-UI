@@ -1,9 +1,8 @@
 from PyQt6.QtCore import Qt,QProcess
+from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
-from DebuggingWindow import *
-from FinalWindow import *
-from MappingWindow import *
+import FactoryMethod
 
 class IntermidiateWindow(QMainWindow):
     def __init__(self):
@@ -39,26 +38,17 @@ class IntermidiateWindow(QMainWindow):
         self.output = output
         error = self.process.exitCode()
         if error == 1:
-            self.ErrWindow = ErrorWindow()
-            self.ErrWindow.show()
-            self.ErrWindow.label.setText(output)
-            self.ErrWindow.setWindowTitle("Error Window")  
+            FactoryMethod.command(self,'error')  
         else:
             output = self.setOutput(output)
             self.textEdit.setText(output)
             self.show()
 
     def startDebug(self):
-        self.DebWindow = DebugWindow()
-        self.DebWindow.setTotalLines(self.totalLines)
-        self.DebWindow.show()
-        self.DebWindow.setWindowTitle("Debug Window")
+        FactoryMethod.command(self,'debug')
 
     def startMap(self):
-        self.MapWindow = MappingWindow()
-        self.MapWindow.setPath(self.path)
-        self.MapWindow.setOutput(self.output)
-        self.MapWindow.run()
+        FactoryMethod.command(self,'map')
 
     def setOutput(self,output):
         text=''
@@ -74,9 +64,7 @@ class IntermidiateWindow(QMainWindow):
         return text
     
     def finalRun(self):
-        self.FinalWindow = FinalWindow()
-        self.FinalWindow.show()
-        self.FinalWindow.setWindowTitle("Final Window")     
+        FactoryMethod.command(self,'final')
 
     def numberLine(self):
         self.textEdit.textChanged.connect(self.updateLineNumbers)

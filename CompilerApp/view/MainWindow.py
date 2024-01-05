@@ -2,9 +2,7 @@ from PyQt6.QtWidgets import  QMainWindow, QFileDialog,QApplication
 from PyQt6.QtCore import Qt
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
-from IntermidiateWindow import *
-from ErrorWindow import *
-import sys
+import sys,FactoryMethod
 
 
 class MainWindow(QMainWindow):
@@ -85,15 +83,9 @@ class MainWindow(QMainWindow):
 
     def compile(self):
         if self.compiler == '' or self.compiler == None :
-            self.ErrWindow = ErrorWindow()
-            self.ErrWindow.show()
-            self.ErrWindow.label.setText("Choose Compiler first")
-            self.ErrWindow.setWindowTitle("Error Window") 
+            FactoryMethod.command(self,'errorComp')
         else:
-            self.InterWindow = IntermidiateWindow()
-            self.InterWindow.setPath(self.currentPath)
-            self.InterWindow.setCompiler(self.compiler)
-            self.InterWindow.run()
+            FactoryMethod.command(self,'intermidiate')
         
       
     def numberLine(self):
