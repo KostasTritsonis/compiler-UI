@@ -1,17 +1,13 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
-from DebuggingWindow import *
-from InputWindow import *
-from ErrorWindow import *
-import os,subprocess
-
-
+import os,subprocess,FactoryMethod
 
 class FinalWindow(QMainWindow):
     def __init__(self):
         self.path = os.path.join('..', 'model', 'final.py')
         self.inputValue = ''
+        self.line = ''
         super(FinalWindow,self).__init__()
         loadUi("FinalWindow.ui",self)
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
@@ -25,7 +21,8 @@ class FinalWindow(QMainWindow):
             line = self.process.stdout.readline().strip()
             if line:
                 if 'Give input' in line:
-                    self.giveInput(line)
+                    self.line = line
+                    self.giveInput()
                     self.process.stdin.write(self.inputValue + "\n")
                     self.process.stdin.flush()
                 else:
@@ -33,11 +30,8 @@ class FinalWindow(QMainWindow):
             self.textEdit.setText(finalTtext)
         self.process.stdin.close()
         
-    def giveInput(self,line):
-        dialog = InputWindow()
-        dialog.label.setText(line)
-        dialog.dataPassed.connect(self.setInputValue)
-        dialog.exec()  
+    def giveInput(self):
+        FactoryMethod.command(self,'input')
         
     def setInputValue(self,data):
         self.inputValue = data

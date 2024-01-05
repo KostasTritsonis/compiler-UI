@@ -1,16 +1,15 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
-from BreakpointWindow import *
-from InputWindow import *
-import os,subprocess
+import os,subprocess,FactoryMethod
 
 
 class DebuggingWindow(QMainWindow):
     def __init__(self):
-        self.path = os.path.join('..', 'view', 'final.py')
+        self.path = os.path.join('..', 'model', 'final.py')
         self.breakPoint = ''
         self.inputValue = ''
+        self.line = ''
         super(DebuggingWindow,self).__init__()
         loadUi("DebugWindow.ui",self) 
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
@@ -43,7 +42,6 @@ class DebuggingWindow(QMainWindow):
         self.debug()
         
     def debug(self):
-        global breakPoint
         scriptPath  = "python -u {compiler} {line}".format(compiler=self.path,line=self.breakPoint)
         self.process = subprocess.Popen(scriptPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
         finalText = ''
@@ -51,7 +49,8 @@ class DebuggingWindow(QMainWindow):
             line = self.process.stdout.readline().strip()
             if line:
                 if 'Give input' in line:
-                    self.giveInput(line)
+                    self.line = line
+                    self.giveInput()
                     self.process.stdin.write(self.inputValue + "\n")
                     self.process.stdin.flush()
                 if line == '-':
@@ -71,17 +70,11 @@ class DebuggingWindow(QMainWindow):
         self.inputValue = data
 
         
-    def giveInput(self,line):
-        dialog = InputWindow()
-        dialog.label.setText(line)
-        dialog.dataPassed.connect(self.setInputValue)
-        dialog.exec()  
+    def giveInput(self):
+        FactoryMethod.command(self,'input')
             
     def giveBreakPoint(self):
-        global breakPoint
-        dialog = BreakpointWindow()
-        dialog.dataPassed.connect(self.setBreakpoint)
-        dialog.exec()
+        FactoryMethod.command(self,'breakpoint')
     
     def resizeEvent(self, event):
         newSize = event.size()

@@ -1,10 +1,10 @@
-
 from ErrorWindow import *
 from IntermidiateWindow import *
 from DebuggingWindow import *
 from MappingWindow import *
 from FinalWindow import *
-
+from InputWindow import *
+from BreakpointWindow import *
 
 def command(self,type):
     if type == 'errorComp':
@@ -34,4 +34,13 @@ def command(self,type):
     elif type == 'final':
         self.FinalWindow = FinalWindow()
         self.FinalWindow.show()
-        self.FinalWindow.setWindowTitle("Final Window")  
+        self.FinalWindow.setWindowTitle("Final Window") 
+    elif type == 'input': 
+        self.dialog = InputWindow()
+        self.dialog.label.setText(self.line)
+        self.dialog.dataPassed.connect(self.setInputValue)
+        self.dialog.exec()
+    elif type == 'breakpoint':
+        self.dialog = BreakpointWindow()
+        self.dialog.dataPassed.connect(self.setBreakpoint)
+        self.dialog.exec()  
