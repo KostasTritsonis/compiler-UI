@@ -30,6 +30,7 @@ def command(self,type):
         self.MapWindow = MappingWindow()
         self.MapWindow.setPath(self.path)
         self.MapWindow.setOutput(self.output)
+        self.MapWindow.setWindowTitle("Mapping Window")
         self.MapWindow.run()
     elif type == 'final':
         self.FinalWindow = FinalWindow()

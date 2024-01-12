@@ -1,6 +1,6 @@
 import sys,os,re
 
-name,programName,currentName= '','',''
+name,programName= '',''
 flag,flag1=0,0
 returnedValue = ()
 par,instructions,table=[],[],[]
@@ -84,7 +84,7 @@ def block():
     return i
 
 def funCommands(i):
-    global name,par,returnedValue,programName,currentName,flag1
+    global name,par,returnedValue,programName,flag1
 
     if i[0] == 'begin_block':
         name = i[1]
