@@ -1,8 +1,8 @@
-from PyQt6.QtCore import Qt,QProcess
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
-import FactoryMethod
+import FactoryMethod,Controller
 
 class IntermidiateWindow(QMainWindow):
     def __init__(self):
@@ -29,20 +29,7 @@ class IntermidiateWindow(QMainWindow):
         self.compiler = compiler  
 
     def run(self):
-        self.process = QProcess()
-        scriptPath  = "python {compiler} {currentPath}".format(currentPath=self.path,compiler=self.compiler)
-        self.process.startCommand(scriptPath)
-        if(self.process.waitForFinished() == False):
-            return
-        output = self.process.readAllStandardOutput().data().decode()
-        self.output = output
-        error = self.process.exitCode()
-        if error == 1:
-            FactoryMethod.command(self,'error')  
-        else:
-            output = self.setOutput(output)
-            self.textEdit.setText(output)
-            self.show()
+        Controller.runIntermidiate(self)
 
     def startDebug(self):
         FactoryMethod.command(self,'debug')

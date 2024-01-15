@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QMainWindow
 from PyQt6 import QtGui
 from PyQt6.uic import loadUi
-import os,subprocess,FactoryMethod
+import os,FactoryMethod,Controller
 
 
 class DebuggingWindow(QMainWindow):
@@ -42,23 +42,7 @@ class DebuggingWindow(QMainWindow):
         self.debug()
         
     def debug(self):
-        scriptPath  = "python -u {compiler} {line}".format(compiler=self.path,line=self.breakPoint)
-        self.process = subprocess.Popen(scriptPath, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
-        finalText = ''
-        while self.process.poll() is None:
-            line = self.process.stdout.readline().strip()
-            if line:
-                if 'Give input' in line:
-                    self.line = line
-                    self.giveInput()
-                    self.process.stdin.write(self.inputValue + "\n")
-                    self.process.stdin.flush()
-                if line == '-':
-                    while self.process.poll() is None:
-                        line = self.process.stdout.readline().strip()
-                        finalText+=line+'\n'
-        self.textEdit.setText(finalText.strip())
-        self.process.stdin.close()
+        Controller.runDebug(self)
         
     def setBreakpoint(self,data):
         if data == '':
