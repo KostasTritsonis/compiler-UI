@@ -409,9 +409,7 @@ def newtemp():
 
 
 def search(name, type):
-    
-
-    for scope in listofscopes:
+    for scope in listofscopes[::-1]:
         for entity in scope.entity:
             if entity.name == name and entity.type in type:
                 return (entity, scope.nestingLevel)

@@ -9,7 +9,6 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow,self).__init__()
         loadUi("MainWindow.ui",self)
-
         self.currentPath = None
         self.compiler = None
         self.numberLine()
@@ -26,8 +25,10 @@ class MainWindow(QMainWindow):
         self.actionCut.triggered.connect(self.cut)
         self.actionCopy.triggered.connect(self.copy)
         self.actionPaste.triggered.connect(self.paste)
+        self.actionAbout.triggered.connect(self.about)
         self.pushButton.clicked.connect(self.compile)
         self.pushButton1.clicked.connect(self.selectCompiler)
+        
 
     def newFile(self):
         self.textEdit.clear()
@@ -61,6 +62,9 @@ class MainWindow(QMainWindow):
             self.currentPath = fileName[0]
         else:
             return
+        
+    def about(self):
+        FactoryMethod.command(self,'about')
         
     def selectCompiler(self):
         fileName = QFileDialog.getOpenFileName(self, 'Choose Compiler','', 'Python files (*.py)')

@@ -1,38 +1,62 @@
-program main
-    declare a, b, c, d;
-    function f(in a, inout b)
-        declare c;
-        procedure f2()
+program testinMyCompiler
+    declare x, count ;
+   
+    function f(in l , in z)
+
+        declare x,y,k;
+
         {
-            c:=5;
-            
+            if( x-10 > 4-z)
+            { 
+                k:=-(x + ( -(3 + 10*y))) + z;
+                x := x+3*y+z+3-6*y;
+            }
+            else
+            {
+                l := 10;
+            };
+
+            return ( (f(in x-1, in (l + k)) + f(in x-2, in (l + k))));
         }
 
-    {
-        b:=3;
-        call f2();
-        return(b);
-    }
- function f3(in a, inout b)
-        declare c;
-        procedure f4()
-        {
-            c:=1;
-            
-        }
+    #subprogram 2#
+    procedure test(inout k)
 
-    {
-        b:=10;
-        call f4();
+        declare z, i;
     
-    }
-	
-
-
-    {
-        a:=1;
-        c:=2;
-        a:= f(in a, inout b);
-        d:=f3(in a, inout b);
-        
-    }.
+        function proc(inout msg)
+        {
+            switchcase
+                case (k = 10){
+                    z:=z+1;
+                }
+                case(k < 10)
+                    z:=z-1;
+                default{
+                    call test(inout z);
+                }; 
+                return (msg);
+        }
+            #statements of precedure#
+        {
+            incase
+                case(x>(10 + proc(inout z)) + 10)
+                    if(x>10)
+                    {     
+                        x:= x-1;
+                    };
+                case(x=10)
+                {
+                    x:=4;
+                };
+            
+            while(not [z<3])
+                i:=i+1;
+        }
+    
+    #main#
+    {   
+        count := 1;
+        print(f(in count, in x));
+        call test(inout count);
+    }.            

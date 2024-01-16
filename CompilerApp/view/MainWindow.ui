@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1153</width>
-    <height>731</height>
+    <width>1508</width>
+    <height>842</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -135,7 +135,7 @@ color: rgb(0, 0, 0);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1153</width>
+     <width>1508</width>
      <height>22</height>
     </rect>
    </property>
@@ -160,8 +160,19 @@ color: rgb(0, 0, 0);</string>
     <addaction name="actionCut"/>
     <addaction name="actionPaste"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="separator"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -227,24 +238,9 @@ color: rgb(0, 0, 0);</string>
     <string>Ctrl+V</string>
    </property>
   </action>
-  <action name="actionStart">
+  <action name="actionAbout">
    <property name="text">
-    <string>Start</string>
-   </property>
-  </action>
-  <action name="actionStop">
-   <property name="text">
-    <string>Stop</string>
-   </property>
-  </action>
-  <action name="actionControl_Flow_Graph">
-   <property name="text">
-    <string>Control Flow Graph</string>
-   </property>
-  </action>
-  <action name="actionSource_Code_Mapping">
-   <property name="text">
-    <string>Source Code Mapping</string>
+    <string>About</string>
    </property>
   </action>
  </widget>

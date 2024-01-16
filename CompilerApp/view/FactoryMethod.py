@@ -5,6 +5,7 @@ from MappingWindow import *
 from FinalWindow import *
 from InputWindow import *
 from BreakpointWindow import *
+from AboutWindow import *
 
 def command(self,type):
     if type == 'errorComp':
@@ -37,11 +38,14 @@ def command(self,type):
         self.FinalWindow.show()
         self.FinalWindow.setWindowTitle("Final Window") 
     elif type == 'input': 
-        self.dialog = InputWindow()
-        self.dialog.label.setText(self.line)
-        self.dialog.dataPassed.connect(self.setInputValue)
-        self.dialog.exec()
+        self.InputWindow = InputWindow()
+        self.InputWindow.label.setText(self.line)
+        self.InputWindow.dataPassed.connect(self.setInputValue)
+        self.InputWindow.exec()
     elif type == 'breakpoint':
-        self.dialog = BreakpointWindow()
-        self.dialog.dataPassed.connect(self.setBreakpoint)
-        self.dialog.exec()  
+        self.BreakWindow = BreakpointWindow()
+        self.BreakWindow.dataPassed.connect(self.setBreakpoint)
+        self.BreakWindow.exec()  
+    elif type == 'about':
+        self.AboutWindow = AboutWindow()
+        self.AboutWindow.show()
