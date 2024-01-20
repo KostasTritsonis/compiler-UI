@@ -2,17 +2,19 @@ program check
 	declare a,b,c,d,f;
 
 
-	function f1()
+	procedure f1()
 	{
 
 		a:=2;
 		print(a);
+		
 
 
 	}
 
 	{
 		a:=4;
+		call f1();
 		print(a);
 		input(b);
 		c := a + b;

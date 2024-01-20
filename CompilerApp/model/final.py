@@ -151,7 +151,7 @@ def funCommands(i):
                     op2 = results[dict][i[2]]
                     break
                 elif flag1==1 and i[2] not in results[dict] and results[dict]['nl'] == 1:
-                    op2 = results[dict][i[2]]
+                    op2 = results[programName][i[2]]
                     break
               
         flag1=0
