@@ -1,12 +1,52 @@
-{'name': 'f1', 'entity': [], 'nestingLevel': 1, 'totalOffset': 12}
--
-{'name': 'a', 'type': 'Var', 'offset': 12}
-{'name': 'b', 'type': 'Var', 'offset': 16}
-{'name': 'c', 'type': 'Var', 'offset': 20}
-{'name': 'd', 'type': 'Var', 'offset': 24}
-{'name': 'f', 'type': 'Var', 'offset': 28}
-{'name': 'f1', 'type': 'procedure', 'argument': [], 'sQuad': 0, 'framelength': 12}
+{'name': 'l', 'type': 'Par', 'parMode': 'cv', 'offset': 12}
+{'name': 'z', 'type': 'Par', 'parMode': 'cv', 'offset': 16}
+{'name': 'x', 'type': 'Var', 'offset': 20}
+{'name': 'y', 'type': 'Var', 'offset': 24}
+{'name': 'k', 'type': 'Var', 'offset': 28}
 {'name': 'T_0', 'type': 'Temp', 'offset': 32}
 {'name': 'T_1', 'type': 'Temp', 'offset': 36}
-{'name': 'check', 'entity': [], 'nestingLevel': 0, 'totalOffset': 40}
+{'name': 'T_2', 'type': 'Temp', 'offset': 40}
+{'name': 'T_3', 'type': 'Temp', 'offset': 44}
+{'name': 'T_4', 'type': 'Temp', 'offset': 48}
+{'name': 'T_5', 'type': 'Temp', 'offset': 52}
+{'name': 'T_6', 'type': 'Temp', 'offset': 56}
+{'name': 'T_7', 'type': 'Temp', 'offset': 60}
+{'name': 'T_8', 'type': 'Temp', 'offset': 64}
+{'name': 'T_9', 'type': 'Temp', 'offset': 68}
+{'name': 'T_10', 'type': 'Temp', 'offset': 72}
+{'name': 'T_11', 'type': 'Temp', 'offset': 76}
+{'name': 'T_12', 'type': 'Temp', 'offset': 80}
+{'name': 'T_13', 'type': 'Temp', 'offset': 84}
+{'name': 'T_14', 'type': 'Temp', 'offset': 88}
+{'name': 'T_15', 'type': 'Temp', 'offset': 92}
+{'name': 'T_16', 'type': 'Temp', 'offset': 96}
+{'name': 'T_17', 'type': 'Temp', 'offset': 100}
+{'name': 'T_18', 'type': 'Temp', 'offset': 104}
+{'name': 'T_19', 'type': 'Temp', 'offset': 108}
+{'name': 'T_20', 'type': 'Temp', 'offset': 112}
+{'name': 'f', 'entity': [], 'nestingLevel': 1, 'totalOffset': 116}
+-
+{'name': 'msg', 'type': 'Par', 'parMode': 'ref', 'offset': 12}
+{'name': 'T_21', 'type': 'Temp', 'offset': 16}
+{'name': 'T_22', 'type': 'Temp', 'offset': 20}
+{'name': 'proc', 'entity': [], 'nestingLevel': 2, 'totalOffset': 24}
+-
+{'name': 'k', 'type': 'Par', 'parMode': 'ref', 'offset': 12}
+{'name': 'z', 'type': 'Var', 'offset': 16}
+{'name': 'i', 'type': 'Var', 'offset': 20}
+{'name': 'proc', 'type': 'function', 'argument': ['ref'], 'sQuad': 0, 'framelength': 24}
+{'name': 'T_23', 'type': 'Temp', 'offset': 24}
+{'name': 'T_24', 'type': 'Temp', 'offset': 28}
+{'name': 'T_25', 'type': 'Temp', 'offset': 32}
+{'name': 'T_26', 'type': 'Temp', 'offset': 36}
+{'name': 'T_27', 'type': 'Temp', 'offset': 40}
+{'name': 'T_28', 'type': 'Temp', 'offset': 44}
+{'name': 'test', 'entity': [], 'nestingLevel': 1, 'totalOffset': 48}
+-
+{'name': 'x', 'type': 'Var', 'offset': 12}
+{'name': 'count', 'type': 'Var', 'offset': 16}
+{'name': 'f', 'type': 'function', 'argument': ['cv', 'cv'], 'sQuad': 0, 'framelength': 116}
+{'name': 'test', 'type': 'procedure', 'argument': ['ref'], 'sQuad': 0, 'framelength': 48}
+{'name': 'T_29', 'type': 'Temp', 'offset': 20}
+{'name': 'testinMyCompiler', 'entity': [], 'nestingLevel': 0, 'totalOffset': 24}
 -

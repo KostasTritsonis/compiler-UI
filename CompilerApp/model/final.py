@@ -60,8 +60,7 @@ def readTable(number):
   
 def block():
     global instructions,lines,flag
-    flag = 0
-    i=0
+    flag,i= 0,0
     while  i < len(instructions):
         if instructions[i][0] == 'halt':
             break 
@@ -85,7 +84,7 @@ def block():
 
 def funCommands(i):
     global name,par,returnedValue,programName,flag1
-
+    print(results)
     if i[0] == 'begin_block':
         name = i[1]
 
@@ -276,7 +275,7 @@ def funCommands(i):
         return int(i[-1])-1   
     
     elif i[0] == 'call':
-        
+        print(par)
         for parameter in par:   
             results[i[1]][parameter[0]] = results[name][parameter[0]]
 
