@@ -2,15 +2,24 @@ program calculator
 	declare choice, x, y;
 	
 	function add(in x, in y)
+	
+
+		procedure add1(in y)
+		{
+			print(y);
+			
+		}
 	{
 		
 		x:= x + 5;
+		call add1(in x);
 		return (x + y);
 	}
 
-	function sub(in x, in y)
+	function sub(in a, inout b)
 	{
-		return (x - y);
+		b:= 1;
+		return (a - y);
 	}
 
 	function mul(in x, in y)
@@ -30,7 +39,7 @@ program calculator
 		if (choice = 1)
 		{
 			print(add(in x, in y));
-			print(sub(in x, in y));
+			print(sub(in x, inout y));
 		}
 		else
 		{

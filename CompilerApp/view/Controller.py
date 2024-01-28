@@ -1,7 +1,7 @@
 from PyQt6.QtCore import QProcess
 import FactoryMethod,subprocess
 
-def runIntermidiate(self):
+def runIntermediate(self):
     self.process = QProcess()
     scriptPath  = "python {compiler} {currentPath}".format(currentPath=self.path,compiler=self.compiler)
     self.process.startCommand(scriptPath)

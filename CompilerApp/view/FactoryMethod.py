@@ -1,5 +1,5 @@
 from ErrorWindow import *
-from IntermidiateWindow import *
+from IntermediateWindow import *
 from DebuggingWindow import *
 from MappingWindow import *
 from FinalWindow import *
@@ -14,7 +14,7 @@ def command(self,type):
         self.ErrWindow.label.setText("Choose Compiler first")
         self.ErrWindow.setWindowTitle("Error Window")
     elif type == 'intermidiate':
-        self.InterWindow = IntermidiateWindow()
+        self.InterWindow = IntermediateWindow()
         self.InterWindow.setPath(self.currentPath)
         self.InterWindow.setCompiler(self.compiler)
         self.InterWindow.run()

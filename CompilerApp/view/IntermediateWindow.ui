@@ -45,7 +45,7 @@ color:#000000;
      <enum>Qt::LeftToRight</enum>
     </property>
     <property name="text">
-     <string>  Intermidiate Code</string>
+     <string>  Intermediate Code</string>
     </property>
     <property name="scaledContents">
      <bool>false</bool>

@@ -3,8 +3,8 @@ import sys,os,re
 name,programName= '',''
 flag,flag1=0,0
 returnedValue = ()
-par,instructions,table=[],[],[]
-results = {}
+instructions,table,parameters,previousName=[],[],[],[]
+results,par = {},{}
 
 pathInt = os.path.join('..', 'inputFiles', 'intFile.int')
 pathTxt = os.path.join('..', 'inputFiles', 'txtFile.txt')
@@ -48,6 +48,7 @@ def readTable(number):
     global programName
     tempData = eval(table[number][-1])
     name = tempData['name']
+    parameters = []
     results[name] = {}
     nestingLevel = int(tempData['nestingLevel'])
     if nestingLevel == 0:
@@ -56,6 +57,9 @@ def readTable(number):
         data = eval(table[number][i])
         if data['type'] == 'Var':
             results[name][data['name']] = 0
+        if data['type'] == 'Par':
+                parameters.append((data['name'],data['parMode']))
+    results[name]['Par'] =  parameters
     results[name]['nl'] = nestingLevel
   
 def block():
@@ -84,7 +88,7 @@ def block():
 
 def funCommands(i):
     global name,par,returnedValue,programName,flag1
-    print(results)
+
     if i[0] == 'begin_block':
         name = i[1]
 
@@ -171,9 +175,6 @@ def funCommands(i):
         elif i[0] == '*':
             results[name][i[-1]]  = op1 * op2
         
-
-                
-
     elif i[0] == 'out':
 
         temp = checkString(i[1]) 
@@ -269,15 +270,20 @@ def funCommands(i):
         if i[2] == 'RET':
             returnedValue = (name,i[1])
         else:
-            par.append([i[1],i[2],name])  
-    
+            if name not in par:
+                parameters.clear()
+            parameters.append((i[1],i[2])) 
+            par[name] = parameters 
     elif i[0] == 'jump':
         return int(i[-1])-1   
     
     elif i[0] == 'call':
-        print(par)
-        for parameter in par:   
-            results[i[1]][parameter[0]] = results[name][parameter[0]]
+        previousName.append(name)
+        a=0
+        
+        for parameter in par[name]:
+            results[i[1]][results[i[1]]['Par'][a][0]] = results[name][parameter[0]]
+            a+=1
 
         begin = ['begin_block',i[1]]
         end = ['end_block',i[1]]
@@ -289,14 +295,16 @@ def funCommands(i):
             else:
                 j+=1
 
-        for parameter in par:
-            name = parameter[2]
+        name = previousName[-1]  
+        print(name)
+        a=0  
+        for parameter in par[name]:
             if parameter[1] == 'REF':
-                results[name][parameter[0]] = results[i[1]][parameter[0]]
-                    
-
-        par = []
-    
+                results[name][parameter[0]] = results[i[1]][results[i[1]]['Par'][a][0]]
+            a+=1
+               
+        del par[name]
+        previousName.pop()
     return -1
 
 
@@ -334,7 +342,11 @@ if __name__ == '__main__':
     line = block()
     for dict in results:
         del results[dict]['nl']
+        del results[dict]['Par']
     if breakPoint != 'None':
         printTable(line)
+    
+    print(results)
+    
 
     

@@ -4,10 +4,10 @@ from PyQt6 import QtGui
 from PyQt6.uic import loadUi
 import FactoryMethod,Controller
 
-class IntermidiateWindow(QMainWindow):
+class IntermediateWindow(QMainWindow):
     def __init__(self):
-        super(IntermidiateWindow,self).__init__()
-        loadUi("IntermidiateWindow.ui",self)
+        super(IntermediateWindow,self).__init__()
+        loadUi("IntermediateWindow.ui",self)
         self.path = None
         self.compiler = None
         self.output = ''
@@ -15,7 +15,7 @@ class IntermidiateWindow(QMainWindow):
         self.numberLine()
         self.init()
         self.setWindowIcon(QtGui.QIcon('compiler.png'))
-        self.setWindowTitle("Intermidiate Window")
+        self.setWindowTitle("Intermediate Window")
 
         
         self.actionStart.triggered.connect(self.startDebug)
@@ -29,7 +29,7 @@ class IntermidiateWindow(QMainWindow):
         self.compiler = compiler  
 
     def run(self):
-        Controller.runIntermidiate(self)
+        Controller.runIntermediate(self)
 
     def startDebug(self):
         FactoryMethod.command(self,'debug')

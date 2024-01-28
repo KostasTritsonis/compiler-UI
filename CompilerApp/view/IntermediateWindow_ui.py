@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'IntermidiateWindow.ui'
+## Form generated from reading UI file 'IntermediateWindow.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -101,7 +101,7 @@ class Ui_MainWindow(object):
         self.actionStop.setText(QCoreApplication.translate("MainWindow", u"Stop", None))
         self.actionControl_Flow_Graph.setText(QCoreApplication.translate("MainWindow", u"Control Flow Graph", None))
         self.actionSource_Code_Mapping.setText(QCoreApplication.translate("MainWindow", u"Source Code Mapping", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"  Intermidiate Code", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"  Intermediate Code", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Run", None))
         self.menuDebugging.setTitle(QCoreApplication.translate("MainWindow", u"Debugging", None))
         self.menuMap.setTitle(QCoreApplication.translate("MainWindow", u"Map", None))
