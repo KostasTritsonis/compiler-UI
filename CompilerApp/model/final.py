@@ -1,7 +1,7 @@
 import sys,os,re
 
 name,programName= '',''
-flag,flag1=0,0
+flag1=0
 returnedValue = ()
 instructions,table,parameters,previousName=[],[],[],[]
 results,par = {},{}
@@ -12,12 +12,12 @@ pathTxt = os.path.join('..', 'inputFiles', 'txtFile.txt')
 try:
     file = open(pathInt,'r')
 except FileNotFoundError:
-    print("Sorry, the file "+ pathInt + "does not exist.")
+    print("Sorry, the file "+ pathInt + " does not exist.")
 
 try:
     file1 = open(pathTxt,'r')
 except FileNotFoundError:
-    print("Sorry, the file "+ pathTxt + "does not exist.")
+    print("Sorry, the file "+ pathTxt + " does not exist.")
 
 breakPoint = sys.argv[1]
 
@@ -63,32 +63,28 @@ def readTable(number):
     results[name]['nl'] = nestingLevel
   
 def block():
-    global instructions,lines,flag
-    flag,i= 0,0
-    while  i < len(instructions):
-        if instructions[i][0] == 'halt':
-            break 
+    global instructions,lines
+    
+    begin = ['begin_block',programName]
+    end = ['end_block',programName]
+    i=instructions.index(begin)
+    while  i <= instructions.index(end):
+        if instructions[i][0] == 'halt': break
 
-        if lines != None:
-            lines -=1
-            if lines == 0:
-                break
-        if programName == instructions[i][1]:
-            flag = 1  
-        if flag == 1:
-            z = funCommands(instructions[i])
-            if z!= -1:
-                i=z
-            else:
-                i+=1
+        z = funCommands(instructions[i])
+        if z == lines:
+            break
+
+        if z!= -1:
+            i=z
         else:
             i+=1
-        
-    return i
+           
+    return z
 
 def funCommands(i):
-    global name,par,returnedValue,programName,flag1
-
+    global name,par,returnedValue,programName,flag1,lines
+    
     if i[0] == 'begin_block':
         name = i[1]
 
@@ -108,6 +104,7 @@ def funCommands(i):
                         elif flag1==1 and results[dict1]['nl'] == 1:
                             results[dict][i[-1]] = results[programName][i[1]] 
                             break
+                    break
                 else:
                     results[dict][i[-1]] = temp
                     break
@@ -123,6 +120,7 @@ def funCommands(i):
                         elif flag1==1 and results[dict1]['nl'] == 1:
                             results[programName][i[-1]] = results[programName][i[1]] 
                             break
+                    break
                 else:
                     results[programName][i[-1]] = temp
                     break
@@ -280,30 +278,33 @@ def funCommands(i):
     elif i[0] == 'call':
         previousName.append(name)
         a=0
-        
-        for parameter in par[name]:
-            results[i[1]][results[i[1]]['Par'][a][0]] = results[name][parameter[0]]
-            a+=1
+        if name in par:
+            for parameter in par[name]:
+                results[i[1]][results[i[1]]['Par'][a][0]] = results[name][parameter[0]]
+                a+=1
 
         begin = ['begin_block',i[1]]
         end = ['end_block',i[1]]
         j=instructions.index(begin)
-        while j < instructions.index(end):
+        while j <= instructions.index(end):
             z = funCommands(instructions[j])
             if z!= -1:
                 j=z
             else:
                 j+=1
 
+            if lines==j: return j
+
         name = previousName[-1]  
-        print(name)
+        
         a=0  
-        for parameter in par[name]:
-            if parameter[1] == 'REF':
-                results[name][parameter[0]] = results[i[1]][results[i[1]]['Par'][a][0]]
-            a+=1
+        if name in par:
+            for parameter in par[name]:
+                if parameter[1] == 'REF':
+                    results[name][parameter[0]] = results[i[1]][results[i[1]]['Par'][a][0]]
+                a+=1
                
-        del par[name]
+            del par[name]
         previousName.pop()
     return -1
 
@@ -320,16 +321,15 @@ def checkString(string):
             
 def printTable(line):
     print('-')
-    print('Line in Intermidiate Code:',line,'\n')
-    for key,value in results.items():
-        print(key,value)
+    print('Line in Intermidiate Code:',line+1,'\n')
+    for dict in results:
+        print(dict,results[dict])
         
 def checkBreakpoint():
     global lines,breakPoint
     
     if breakPoint != 'None':
-        breakPoint = int(breakPoint)
-        lines = breakPoint+1
+        lines = int(breakPoint)-1
     else:
         lines = None        
 
@@ -345,7 +345,6 @@ if __name__ == '__main__':
         del results[dict]['Par']
     if breakPoint != 'None':
         printTable(line)
-    
     print(results)
     
 

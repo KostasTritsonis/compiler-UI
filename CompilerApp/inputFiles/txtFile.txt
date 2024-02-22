@@ -1,9 +1,8 @@
-{'name': 'y', 'type': 'Par', 'parMode': 'cv', 'offset': 12}
-{'name': 'add1', 'entity': [], 'nestingLevel': 2, 'totalOffset': 16}
+{'name': 'add1', 'entity': [], 'nestingLevel': 2, 'totalOffset': 12}
 -
 {'name': 'x', 'type': 'Par', 'parMode': 'cv', 'offset': 12}
 {'name': 'y', 'type': 'Par', 'parMode': 'cv', 'offset': 16}
-{'name': 'add1', 'type': 'procedure', 'argument': ['cv'], 'sQuad': 0, 'framelength': 16}
+{'name': 'add1', 'type': 'procedure', 'argument': [], 'sQuad': 0, 'framelength': 12}
 {'name': 'T_0', 'type': 'Temp', 'offset': 20}
 {'name': 'T_1', 'type': 'Temp', 'offset': 24}
 {'name': 'add', 'entity': [], 'nestingLevel': 1, 'totalOffset': 28}

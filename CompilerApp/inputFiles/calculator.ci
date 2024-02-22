@@ -4,15 +4,15 @@ program calculator
 	function add(in x, in y)
 	
 
-		procedure add1(in y)
+		procedure add1()
 		{
-			print(y);
+			y:=10;
 			
 		}
 	{
 		
 		x:= x + 5;
-		call add1(in x);
+		call add1();
 		return (x + y);
 	}
 
