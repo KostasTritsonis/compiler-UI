@@ -345,7 +345,5 @@ if __name__ == '__main__':
         del results[dict]['Par']
     if breakPoint != 'None':
         printTable(line)
-    print(results)
-    
 
     
