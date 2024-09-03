@@ -7,3 +7,4 @@
 ## Λειτουργία
 
 Για να μπορέσετε να τρέξετε το πρόγραμμα θα χρειαστεί να περιηγηθείτε στον φάκελο CompilerApp/view και στην συνέχεια θα τρέξετε το αρχείο MainWindow.py. Αυτό μπορεί να γίνει με την εντολή «python mainwindow.py».
+![image](https://github.com/user-attachments/assets/854b9870-ce57-440b-963a-55a489e4b8e6)
